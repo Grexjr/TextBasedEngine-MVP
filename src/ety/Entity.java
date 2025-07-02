@@ -6,6 +6,7 @@ package ety;
  * It provides all parameters for entities as well as most functionality for entities.
  */
 public class Entity {
+    // TODO: Use direct access rather than getters and setters for the methods in here -- refactoring
 
     // === VARIABLES AND FIELDS ===
     private int entityLevel, entityCurrentHealth, entityAttack, entityDefense, entitySpeed;
