@@ -103,23 +103,11 @@ public class BattleController {
     }
 
     // === BATTLE PROGRESS METHODS ===
-
-    // check if player turn method
-    private boolean ifPlayerTurn(){
-        return this.battleScene.isGoerPlayer(
-                this.battleScene.determineTurn(
-                        this.battleScene.getPlayer(),
-                        this.battleScene.getEnemy()
-                ));
-    }
-
     // player turn method
     private void runPlayerTurn(){
-        if(ifPlayerTurn()){
             this.battlePanel.log("Player turn time!\n");
             this.battleScene.setPlayerTurn(true);
             this.battlePanel.getButtonPanel().setVisible(true);
-        }
     }
 
     // enemy turn method
@@ -129,6 +117,11 @@ public class BattleController {
                 this.battlePanel.log("Slime attacks!\n");
                 this.battleScene.attackEntity(this.battleScene.getEnemy(),this.battleScene.getPlayer());
                 this.battlePanel.printHealth(this.battleScene.getPlayer());
+                if(this.battleScene.getPlayer().getEntityCurrentHealth() <= 0){
+                    this.battlePanel.log("You have lost!");
+                    System.out.println(this.battleScene.getPlayer() + " hast lost.");
+                    System.exit(0); //TODO: Find better loss behavior
+                }
                 break;
         }
         runPlayerTurn();
@@ -145,8 +138,11 @@ public class BattleController {
 
     // battle loop method
     private void runBattleLoop(){
-        runPlayerTurn();
-
+        if(this.battleScene.determineTurn(this.battleScene.getPlayer(),this.battleScene.getEnemy()) instanceof Player){
+            runPlayerTurn();
+        }else{
+        SwingUtilities.invokeLater(this::runEnemyTurn);
+        }
     }
 
 

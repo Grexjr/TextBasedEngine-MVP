@@ -58,10 +58,15 @@ public class BattlePanel extends JPanel {
     // === OTHER METHODS ===
 
     // -- Helper Methods --
+    // method to always have scrollbar go to the bottom -- added to log method so everytime logged it goes to bottom
+    public void scrollDown(){
+        this.battleScroller.getVerticalScrollBar().setValue(battleScroller.getVerticalScrollBar().getMaximum());
+    }
 
     // method to log something on the text field
     public void log(String message){
         this.textLog.append(message + "\n");
+        SwingUtilities.invokeLater(this::scrollDown);
     }
 
 

@@ -15,7 +15,7 @@ public class Tester {
 
         GameWindow gameWindow = new GameWindow(800,600,"Game");
         Player player = new Player("Player");
-        Enemy slime = new Slime(1);
+        Enemy slime = new Slime(5); //TODO: FIX ATTACK AT HIGHER LEVELS; adds attack to defense into negatives
         BattleScene bsc = new BattleScene(player,slime);
 
         BattleController bc = new BattleController(bsc);

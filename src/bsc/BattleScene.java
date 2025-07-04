@@ -49,6 +49,7 @@ public class BattleScene {
     }
 
     // method to determine which of two entities goes first
+    //TODO: Fix bug; always returning the enemy in determineturn when higher level
     //TODO: Determine where you want this method to be
     protected Entity determineTurn(Entity entity1, Entity entity2){
         Entity goer = null;
@@ -71,15 +72,28 @@ public class BattleScene {
         return goer; //TODO: Throw exception here
     }
 
-    // method to determine if firstGoer is instance of player, to do player turn
-    protected boolean isGoerPlayer(Entity goer){
-        return goer instanceof Player;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // attack entity method
     //TODO: Split this up, put some in entity, some here
     protected void attackEntity(Entity attacker, Entity target){
-        int attackPower = attacker.getEntityAttack() - target.getEntityDefense();
+        int attackPower = Math.max(attacker.getEntityAttack() - target.getEntityDefense(),0);
         target.setEntityCurrentHealth(target.getEntityCurrentHealth() - attackPower);
         // Debug
         System.out.println(attacker.getEntityName() + " attacks " + target.getEntityName());
