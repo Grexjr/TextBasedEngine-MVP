@@ -22,9 +22,6 @@ public class Tester {
 
         gameWindow.add(bc.getBattlePanel());
 
-
-
-
         gameWindow.refresh();
 
     }

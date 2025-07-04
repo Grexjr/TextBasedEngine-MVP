@@ -24,7 +24,7 @@ public class BattlePanel extends JPanel {
         // Creating the text panel
         this.textLog = new JTextArea(30,65);
         this.textLog.setEditable(false);
-        this.battleScroller = new JScrollPane(textLog);
+        this.battleScroller = new JScrollPane(textLog); //TODO: make scrollbar always follow text; every print line?
         this.add(battleScroller,BorderLayout.CENTER);
 
         //add all buttons, for now just do manual below
@@ -47,6 +47,8 @@ public class BattlePanel extends JPanel {
 
 
     // === GETTERS AND SETTERS ===
+    public JPanel getButtonPanel() {return this.buttonPanel;}
+
     public JButton getAttackButton() {return this.attackButton;}
     public JButton getDefendButton() {return this.defendButton;}
     public JButton getItemButton() {return this.itemButton;}
@@ -66,7 +68,7 @@ public class BattlePanel extends JPanel {
     // === PRINTING METHODS ===
     public void printHealth(Entity battler){
         this.log(battler.getEntityName() + " health: " + battler.getEntityCurrentHealth() + "/" +
-                battler.getEntityMaxHealth());
+                battler.getEntityMaxHealth() +"\n");
     }
 
 

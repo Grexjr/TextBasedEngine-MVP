@@ -15,4 +15,9 @@ public class Player extends Entity{
         );
     }
 
+
+    // === OTHER METHODS ===
+
+    // -- Battle Methods --
+
 }
