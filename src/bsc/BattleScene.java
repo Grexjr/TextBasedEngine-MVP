@@ -3,6 +3,7 @@ package bsc;
 import ety.Entity;
 import ety.Player;
 import ety.enemy.Enemy;
+import gui.parts.BattlePanel;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,7 +24,7 @@ public class BattleScene {
 
         // Debug
         System.out.println("Starting battle!");
-        battleLoop();
+        //battleLoop();
     }
 
 
@@ -60,7 +61,7 @@ public class BattleScene {
 
     // attack entity method
     //TODO: Split this up, put some in entity, some here
-    private void attackEntity(Entity attacker, Entity target){
+    protected void attackEntity(Entity attacker, Entity target){
         int attackPower = attacker.getEntityAttack() - target.getEntityDefense();
         target.setEntityCurrentHealth(target.getEntityCurrentHealth() - attackPower);
         // Debug

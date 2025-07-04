@@ -1,5 +1,7 @@
 package gui.parts;
 
+import ety.Entity;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -41,27 +43,30 @@ public class BattlePanel extends JPanel {
         this.add(buttonPanel,BorderLayout.SOUTH);
 
         // Adding the functionality to the buttons
-        this.setUpActionListeners(enemyName);
     }
 
 
     // === GETTERS AND SETTERS ===
+    public JButton getAttackButton() {return this.attackButton;}
+    public JButton getDefendButton() {return this.defendButton;}
+    public JButton getItemButton() {return this.itemButton;}
+    public JButton getRunButton() {return this.runButton;}
 
 
     // === OTHER METHODS ===
 
     // -- Helper Methods --
-    // method to set the action listeners for the buttons
-    private void setUpActionListeners(String enemyName){
-        this.attackButton.addActionListener(e -> log("You attack the " + enemyName +'!'));
-        this.defendButton.addActionListener(e -> log("You defend!"));
-        this.itemButton.addActionListener(e -> log("You try to use an item!"));
-        this.runButton.addActionListener(e -> log("You attempt to escape!"));
-    }
 
     // method to log something on the text field
-    private void log(String message){
+    public void log(String message){
         this.textLog.append(message + "\n");
+    }
+
+
+    // === PRINTING METHODS ===
+    public void printHealth(Entity battler){
+        this.log(battler.getEntityName() + " health: " + battler.getEntityCurrentHealth() + "/" +
+                battler.getEntityMaxHealth());
     }
 
 
