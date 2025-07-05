@@ -1,6 +1,6 @@
 package bsc;
 
-import ety.BattleChoice;
+import ety.Entity;
 import ety.Player;
 import ety.enemy.Enemy;
 import gui.parts.BattlePanel;
@@ -18,14 +18,42 @@ public class BattleController {
     public BattleController(BattleScene bsc){
         this.battleScene = bsc;
         this.battlePanel = new BattlePanel(bsc.getEnemy().getEntityName());
-        setUpActionListeners(bsc.getEnemy().getEntityName());
+        setUpActionListeners();
 
-        if(!this.battleScene.isPLayerTurn()){
+        if(!this.battleScene.isPlayerTurn()){
             this.battlePanel.getButtonPanel().setVisible(false);
         }
 
         startBattle();
         runBattleLoop();
+    }
+
+    // === CONSTRUCTOR METHODS ===
+
+    // method to set the action listeners for the buttons
+    private void setUpActionListeners(){
+        this.battlePanel.getAttackButton().addActionListener(e -> {
+
+            this.handlePlayerAttack();
+
+            if(checkLoss(this.battleScene.getEnemy())){
+                runLoss(this.battleScene.getEnemy());
+            }
+
+            finishPlayerTurn();
+        });
+        this.battlePanel.getDefendButton().addActionListener(e -> {
+            this.handlePlayerDefense();
+            finishPlayerTurn();
+        });
+        this.battlePanel.getItemButton().addActionListener(e -> {
+            this.handlePlayerItemUse();
+            finishPlayerTurn();
+        });
+        this.battlePanel.getRunButton().addActionListener(e -> {
+            this.handlePlayerRun();
+            finishPlayerTurn();
+        });
     }
 
 
@@ -34,48 +62,42 @@ public class BattleController {
     public BattlePanel getBattlePanel() {return this.battlePanel;}
 
 
-    // === OTHER METHODS ===
+    // === OTHER METHODS === | TODO: Check if some of these should just go into battlescene
 
     // -- Helper Methods --
-    // method to set the action listeners for the buttons
-    private void setUpActionListeners(String enemyName){
-        this.battlePanel.getAttackButton().addActionListener(e -> {
+    // method to finish up the player turn
+    private void finishPlayerTurn(){
+        this.battlePanel.hide(this.battlePanel.getButtonPanel());
+        this.battleScene.setPlayerTurn(false);
+        SwingUtilities.invokeLater(this::runEnemyTurn);
+    }
 
-            this.handlePlayerAttack(enemyName);
-            this.battlePanel.getButtonPanel().setVisible(false);
+    // method to check if entity loses
+    private boolean checkLoss(Entity entity){
+        return entity.getEntityCurrentHealth() <= 0;
+    }
 
-            if(this.battleScene.getEnemy().getEntityCurrentHealth() <= 0){
-                //TODO: add battle end function
-                System.out.println("Battle won player");
-                System.exit(0);
-            }
-            this.battleScene.setPlayerTurn(false);
-            SwingUtilities.invokeLater(this::runEnemyTurn);
-        });
-        this.battlePanel.getDefendButton().addActionListener(e -> {
-            this.handlePlayerDefense();
-            this.battlePanel.getButtonPanel().setVisible(false);
-            this.battleScene.setPlayerTurn(false);
-            SwingUtilities.invokeLater(this::runEnemyTurn);
-        });
-        this.battlePanel.getItemButton().addActionListener(e -> {
-            this.handlePlayerItemUse();
-            this.battlePanel.getButtonPanel().setVisible(false);
-            this.battleScene.setPlayerTurn(false);
-            SwingUtilities.invokeLater(this::runEnemyTurn);
-        });
-        this.battlePanel.getRunButton().addActionListener(e -> {
-            this.handlePlayerRun();
-            this.battlePanel.getButtonPanel().setVisible(false);
-            this.battleScene.setPlayerTurn(false);
-            SwingUtilities.invokeLater(this::runEnemyTurn);
-        });
+    // method to run the loss of the entity
+    private void runLoss(Entity entity){ //TODO: add better functionality
+        this.battlePanel.printLoss(entity);
+
+        // Debug and temporary
+        if(entity instanceof Player){
+            // Debug
+            System.out.println(this.battleScene.getPlayer() + " has lost.");
+            System.exit(0);
+        }
+        if(entity instanceof Enemy){
+            // Debug
+            System.out.println("Battle won player");
+            System.exit(0);
+        }
     }
 
     // method to handle attacks
-    private void handlePlayerAttack(String enemyName){
-        if(this.battleScene.isPLayerTurn()){
-            this.battlePanel.log("You attack the " + enemyName +"!");
+    private void handlePlayerAttack(){
+        if(this.battleScene.isPlayerTurn()){
+            this.battlePanel.printPlayerAttack(this.battleScene.getEnemy().getEntityName());
             this.battleScene.attackEntity(this.battleScene.getPlayer(),this.battleScene.getEnemy());
             this.battlePanel.printHealth(this.battleScene.getEnemy());
         }
@@ -83,29 +105,29 @@ public class BattleController {
 
     // method to handle defense
     private void handlePlayerDefense(){
-        if(this.battleScene.isPLayerTurn()){
-            this.battlePanel.log("You defend!");
+        if(this.battleScene.isPlayerTurn()){
+            this.battlePanel.printPlayerDefend();
         }
     }
 
     // method to handle item use
     private void handlePlayerItemUse(){
-        if(this.battleScene.isPLayerTurn()){
-            this.battlePanel.log("You try to use an item!");
+        if(this.battleScene.isPlayerTurn()){
+            this.battlePanel.printPlayerItemUse();
         }
     }
 
     // method to handle running
     private void handlePlayerRun(){
-        if(this.battleScene.isPLayerTurn()){
-            this.battlePanel.log("You attempt to escape!");
+        if(this.battleScene.isPlayerTurn()){
+            this.battlePanel.printPlayerRun();
         }
     }
 
     // === BATTLE PROGRESS METHODS ===
     // player turn method
     private void runPlayerTurn(){
-            this.battlePanel.log("Player turn time!\n");
+            this.battlePanel.printPlayerStartTurn();
             this.battleScene.setPlayerTurn(true);
             this.battlePanel.getButtonPanel().setVisible(true);
     }
@@ -114,13 +136,11 @@ public class BattleController {
     private void runEnemyTurn(){
         switch(this.battleScene.getEnemy().makeBattleChoice()){
             default:
-                this.battlePanel.log("Slime attacks!\n");
+                this.battlePanel.printEnemyAttack(this.battleScene.getEnemy());
                 this.battleScene.attackEntity(this.battleScene.getEnemy(),this.battleScene.getPlayer());
                 this.battlePanel.printHealth(this.battleScene.getPlayer());
-                if(this.battleScene.getPlayer().getEntityCurrentHealth() <= 0){
-                    this.battlePanel.log("You have lost!");
-                    System.out.println(this.battleScene.getPlayer() + " hast lost.");
-                    System.exit(0); //TODO: Find better loss behavior
+                if(checkLoss(this.battleScene.getPlayer())){
+                    runLoss(this.battleScene.getPlayer());
                 }
                 break;
         }
@@ -128,12 +148,8 @@ public class BattleController {
     }
 
     // start battle method
-    private void startBattle(){
-        this.battlePanel.log("The battle between " +
-                this.battleScene.getPlayer().getEntityName() +
-                " and " +
-                this.battleScene.getEnemy().getEntityName() +
-                " has begun!\n");
+    private void startBattle(){ // in case more logic is added
+        this.battlePanel.printBattleStart(this.battleScene.getPlayer(),this.battleScene.getEnemy());
     }
 
     // battle loop method

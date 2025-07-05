@@ -3,9 +3,7 @@ package bsc;
 import ety.Entity;
 import ety.Player;
 import ety.enemy.Enemy;
-import gui.parts.BattlePanel;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class BattleScene {
@@ -24,8 +22,7 @@ public class BattleScene {
         this.isPlayerTurn = false;
 
         // Debug
-        System.out.println("Starting battle!");
-        //battleLoop();
+        System.out.println("Starting battle...");
     }
 
 
@@ -36,7 +33,7 @@ public class BattleScene {
     public Enemy getEnemy() {return this.enemy;}
     public Player getPlayer() {return this.player;}
 
-    public boolean isPLayerTurn() {return this.isPlayerTurn;}
+    public boolean isPlayerTurn() {return this.isPlayerTurn;}
     public void setPlayerTurn(boolean value) {this.isPlayerTurn = value;}
 
 
@@ -49,8 +46,6 @@ public class BattleScene {
     }
 
     // method to determine which of two entities goes first
-    //TODO: Fix bug; always returning the enemy in determineturn when higher level
-    //TODO: Determine where you want this method to be
     protected Entity determineTurn(Entity entity1, Entity entity2){
         Entity goer = null;
         if(entity1.getEntitySpeed() > entity2.getEntitySpeed()){
@@ -59,7 +54,7 @@ public class BattleScene {
         } else if(entity1.getEntitySpeed() < entity2.getEntitySpeed()){
             goer = entity2;
             return goer;
-        } else {
+        } else { //TODO: Test if this is actually working, doesn't seem to be
             int rand = new Random().nextInt(0,1);
             if(rand == 0){
                 goer = entity1;
@@ -72,43 +67,13 @@ public class BattleScene {
         return goer; //TODO: Throw exception here
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // attack entity method
-    //TODO: Split this up, put some in entity, some here
+    //TODO: Split this up, put some in entity, some here?
     protected void attackEntity(Entity attacker, Entity target){
         int attackPower = Math.max(attacker.getEntityAttack() - target.getEntityDefense(),0);
         target.setEntityCurrentHealth(target.getEntityCurrentHealth() - attackPower);
         // Debug
         System.out.println(attacker.getEntityName() + " attacks " + target.getEntityName());
-    }
-
-    // method to return the loser of the battle -- null check if neither loses
-    private Entity findLoser(){
-        if(this.player.getEntityCurrentHealth() <= 0) {return this.player;}
-        if(this.enemy.getEntityCurrentHealth() <= 0) {return this.enemy;}
-        return null;
-    }
-
-    // method to find the winner of the battle -- null check if neither wins
-    private Entity findWinner(){
-        return this.player.getEntityCurrentHealth() > this.enemy.getEntityCurrentHealth() ? this.player : this.enemy;
     }
 
 

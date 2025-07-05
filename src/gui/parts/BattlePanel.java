@@ -1,6 +1,7 @@
 package gui.parts;
 
 import ety.Entity;
+import ety.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 public class BattlePanel extends JPanel {
 
     // === VARIABLES AND FIELDS ===
-    private final JLabel titleLabel;
     private final JTextArea textLog;
     private final JScrollPane battleScroller;
     private final JButton attackButton, defendButton, itemButton, runButton;
@@ -18,16 +18,17 @@ public class BattlePanel extends JPanel {
 
     // === THE CONSTRUCTOR ===
     public BattlePanel(String enemyName){
-        this.titleLabel = new JLabel("Battle versus " + enemyName);
+        // Creating the title label
+        JLabel titleLabel = new JLabel("Battle versus " + enemyName);
         this.add(titleLabel, BorderLayout.NORTH);
 
         // Creating the text panel
         this.textLog = new JTextArea(30,65);
         this.textLog.setEditable(false);
-        this.battleScroller = new JScrollPane(textLog); //TODO: make scrollbar always follow text; every print line?
+        this.battleScroller = new JScrollPane(textLog);
         this.add(battleScroller,BorderLayout.CENTER);
 
-        //add all buttons, for now just do manual below
+        //add all buttons, for now just do manual below | TODO: Use enum or class(?) for future
         this.attackButton = new JButton("Attack");
         this.defendButton = new JButton("Defend");
         this.itemButton = new JButton("Items");
@@ -41,14 +42,11 @@ public class BattlePanel extends JPanel {
         this.buttonPanel.add(this.itemButton);
         this.buttonPanel.add(this.runButton);
         this.add(buttonPanel,BorderLayout.SOUTH);
-
-        // Adding the functionality to the buttons
     }
 
 
     // === GETTERS AND SETTERS ===
     public JPanel getButtonPanel() {return this.buttonPanel;}
-
     public JButton getAttackButton() {return this.attackButton;}
     public JButton getDefendButton() {return this.defendButton;}
     public JButton getItemButton() {return this.itemButton;}
@@ -69,11 +67,73 @@ public class BattlePanel extends JPanel {
         SwingUtilities.invokeLater(this::scrollDown);
     }
 
+    // method to hide a component
+    public void hide(Component part){
+        part.setVisible(false);
+    }
 
-    // === PRINTING METHODS ===
+    // method to show a component
+    public void show(Component part){
+        part.setVisible(true);
+    }
+
+
+    // -- Printing Methods --
+    // method to print battle start
+    public void printBattleStart(Entity player, Entity enemy){
+        this.log("The battle between " +
+                player.getEntityName() +
+                " and " +
+                enemy.getEntityName() +
+                " has begun!\n");
+    }
+
+    // method to print health | TODO: Should this go here?
     public void printHealth(Entity battler){
         this.log(battler.getEntityName() + " health: " + battler.getEntityCurrentHealth() + "/" +
                 battler.getEntityMaxHealth() +"\n");
+    }
+
+    // method to print loss
+    public void printLoss(Entity finisher){
+        if(finisher instanceof Player){
+            this.log(finisher.getEntityName() + " has lost!");
+        } else{
+            this.log(finisher.getEntityName() + " has won!");
+        }
+    }
+
+    // print player turn start
+    public void printPlayerStartTurn(){
+        this.log("Player act time!");
+    }
+
+    // - Methods to print button presses -
+    // player attack
+    public void printPlayerAttack(String enemyName){
+        this.log("You attack the " + enemyName +"!");
+    }
+
+    // player defend
+    public void printPlayerDefend(){
+        this.log("You defend!");
+    }
+
+    // player item use
+    public void printPlayerItemUse(){
+        this.log("You try to use an item!");
+    }
+
+    // player run
+    public void printPlayerRun(){
+        this.log("You attempt to escape!");
+    }
+
+
+    // - Methods to print enemy-related things -
+    // enemy attack
+    public void printEnemyAttack(Entity enemy){
+        this.log(enemy.getEntityName() + " attacks!\n");
     }
 
 
