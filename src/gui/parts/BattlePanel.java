@@ -1,5 +1,8 @@
 package gui.parts;
 
+import ety.Entity;
+import ety.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -7,7 +10,6 @@ import java.util.ArrayList;
 public class BattlePanel extends JPanel {
 
     // === VARIABLES AND FIELDS ===
-    private final JLabel titleLabel;
     private final JTextArea textLog;
     private final JScrollPane battleScroller;
     private final JButton attackButton, defendButton, itemButton, runButton;
@@ -16,7 +18,8 @@ public class BattlePanel extends JPanel {
 
     // === THE CONSTRUCTOR ===
     public BattlePanel(String enemyName){
-        this.titleLabel = new JLabel("Battle versus " + enemyName);
+        // Creating the title label
+        JLabel titleLabel = new JLabel("Battle versus " + enemyName);
         this.add(titleLabel, BorderLayout.NORTH);
 
         // Creating the text panel
@@ -25,7 +28,7 @@ public class BattlePanel extends JPanel {
         this.battleScroller = new JScrollPane(textLog);
         this.add(battleScroller,BorderLayout.CENTER);
 
-        //add all buttons, for now just do manual below
+        //add all buttons, for now just do manual below | TODO: Use enum or class(?) for future
         this.attackButton = new JButton("Attack");
         this.defendButton = new JButton("Defend");
         this.itemButton = new JButton("Items");
@@ -39,29 +42,98 @@ public class BattlePanel extends JPanel {
         this.buttonPanel.add(this.itemButton);
         this.buttonPanel.add(this.runButton);
         this.add(buttonPanel,BorderLayout.SOUTH);
-
-        // Adding the functionality to the buttons
-        this.setUpActionListeners(enemyName);
     }
 
 
     // === GETTERS AND SETTERS ===
+    public JPanel getButtonPanel() {return this.buttonPanel;}
+    public JButton getAttackButton() {return this.attackButton;}
+    public JButton getDefendButton() {return this.defendButton;}
+    public JButton getItemButton() {return this.itemButton;}
+    public JButton getRunButton() {return this.runButton;}
 
 
     // === OTHER METHODS ===
 
     // -- Helper Methods --
-    // method to set the action listeners for the buttons
-    private void setUpActionListeners(String enemyName){
-        this.attackButton.addActionListener(e -> log("You attack the " + enemyName +'!'));
-        this.defendButton.addActionListener(e -> log("You defend!"));
-        this.itemButton.addActionListener(e -> log("You try to use an item!"));
-        this.runButton.addActionListener(e -> log("You attempt to escape!"));
+    // method to always have scrollbar go to the bottom -- added to log method so everytime logged it goes to bottom
+    public void scrollDown(){
+        this.battleScroller.getVerticalScrollBar().setValue(battleScroller.getVerticalScrollBar().getMaximum());
     }
 
     // method to log something on the text field
-    private void log(String message){
+    public void log(String message){
         this.textLog.append(message + "\n");
+        SwingUtilities.invokeLater(this::scrollDown);
+    }
+
+    // method to hide a component
+    public void hide(Component part){
+        part.setVisible(false);
+    }
+
+    // method to show a component
+    public void show(Component part){
+        part.setVisible(true);
+    }
+
+
+    // -- Printing Methods --
+    // method to print battle start
+    public void printBattleStart(Entity player, Entity enemy){
+        this.log("The battle between " +
+                player.getEntityName() +
+                " and " +
+                enemy.getEntityName() +
+                " has begun!\n");
+    }
+
+    // method to print health | TODO: Should this go here?
+    public void printHealth(Entity battler){
+        this.log(battler.getEntityName() + " health: " + battler.getEntityCurrentHealth() + "/" +
+                battler.getEntityMaxHealth() +"\n");
+    }
+
+    // method to print loss
+    public void printLoss(Entity finisher){
+        if(finisher instanceof Player){
+            this.log(finisher.getEntityName() + " has lost!");
+        } else{
+            this.log(finisher.getEntityName() + " has won!");
+        }
+    }
+
+    // print player turn start
+    public void printPlayerStartTurn(){
+        this.log("Player act time!");
+    }
+
+    // - Methods to print button presses -
+    // player attack
+    public void printPlayerAttack(String enemyName){
+        this.log("You attack the " + enemyName +"!");
+    }
+
+    // player defend
+    public void printPlayerDefend(){
+        this.log("You defend!");
+    }
+
+    // player item use
+    public void printPlayerItemUse(){
+        this.log("You try to use an item!");
+    }
+
+    // player run
+    public void printPlayerRun(){
+        this.log("You attempt to escape!");
+    }
+
+
+    // - Methods to print enemy-related things -
+    // enemy attack
+    public void printEnemyAttack(Entity enemy){
+        this.log(enemy.getEntityName() + " attacks!\n");
     }
 
 

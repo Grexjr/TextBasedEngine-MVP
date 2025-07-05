@@ -1,5 +1,6 @@
 package tst;
 
+import bsc.BattleController;
 import bsc.BattleScene;
 import ety.Player;
 import ety.enemy.Enemy;
@@ -17,7 +18,10 @@ public class Tester {
         Enemy slime = new Slime(1);
         BattleScene bsc = new BattleScene(player,slime);
 
-        gameWindow.add(new BattlePanel(bsc.getEnemy().getEntityName()));
+        BattleController bc = new BattleController(bsc);
+
+        gameWindow.add(bc.getBattlePanel());
+
         gameWindow.refresh();
 
     }

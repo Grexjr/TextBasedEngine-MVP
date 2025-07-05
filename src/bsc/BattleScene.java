@@ -4,13 +4,12 @@ import ety.Entity;
 import ety.Player;
 import ety.enemy.Enemy;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class BattleScene {
 
     // === VARIABLES AND FIELDS FOR BATTLESCENE ===
-    private boolean inBattle;
+    private boolean inBattle, isPlayerTurn;
     private final Enemy enemy;
     private final Player player;
 
@@ -20,10 +19,10 @@ public class BattleScene {
         this.enemy = enemy;
         this.player = player;
         this.inBattle = true;
+        this.isPlayerTurn = false;
 
         // Debug
-        System.out.println("Starting battle!");
-        battleLoop();
+        System.out.println("Starting battle...");
     }
 
 
@@ -33,6 +32,9 @@ public class BattleScene {
 
     public Enemy getEnemy() {return this.enemy;}
     public Player getPlayer() {return this.player;}
+
+    public boolean isPlayerTurn() {return this.isPlayerTurn;}
+    public void setPlayerTurn(boolean value) {this.isPlayerTurn = value;}
 
 
     // === OTHER METHODS ===
@@ -44,78 +46,35 @@ public class BattleScene {
     }
 
     // method to determine which of two entities goes first
-    //TODO: Determine where you want this method to be
-    //TODO: takeTurn method
-    private void determineFirst(Entity entity1, Entity entity2){
-        if(compareSpeeds(entity1,entity2) == entity1.getEntitySpeed()){
-            attackEntity(entity1,entity2);
+    protected Entity determineTurn(Entity entity1, Entity entity2){
+        Entity goer = null;
+        if(entity1.getEntitySpeed() > entity2.getEntitySpeed()){
+            goer = entity1;
+            return goer;
+        } else if(entity1.getEntitySpeed() < entity2.getEntitySpeed()){
+            goer = entity2;
+            return goer;
+        } else { //TODO: Test if this is actually working, doesn't seem to be
+            int rand = new Random().nextInt(0,1);
+            if(rand == 0){
+                goer = entity1;
+                return goer;
+            } else if(rand == 1){
+                goer = entity2;
+                return goer;
+            }
         }
-        if(compareSpeeds(entity1,entity2) == entity2.getEntitySpeed()){
-            attackEntity(entity2,entity1);
-        }
-        Random rand = new Random();
-        if(rand.nextInt(1,2) == 1) {attackEntity(entity1,entity2);}
-        if(rand.nextInt(1,2) == 2) {attackEntity(entity1,entity2);}
+        return goer; //TODO: Throw exception here
     }
 
     // attack entity method
-    //TODO: Split this up, put some in entity, some here
-    private void attackEntity(Entity attacker, Entity target){
-        int attackPower = attacker.getEntityAttack() - target.getEntityDefense();
+    //TODO: Split this up, put some in entity, some here?
+    protected void attackEntity(Entity attacker, Entity target){
+        int attackPower = Math.max(attacker.getEntityAttack() - target.getEntityDefense(),0);
         target.setEntityCurrentHealth(target.getEntityCurrentHealth() - attackPower);
         // Debug
         System.out.println(attacker.getEntityName() + " attacks " + target.getEntityName());
     }
-
-    // method to return the loser of the battle -- null check if neither loses
-    private Entity findLoser(){
-        if(this.player.getEntityCurrentHealth() <= 0) {return this.player;}
-        if(this.enemy.getEntityCurrentHealth() <= 0) {return this.enemy;}
-        return null;
-    }
-
-    // method to find the winner of the battle -- null check if neither wins
-    private Entity findWinner(){
-        return this.player.getEntityCurrentHealth() > this.enemy.getEntityCurrentHealth() ? this.player : this.enemy;
-    }
-
-
-    // === BATTLE PROGRESS METHODS ===
-    // method to start the battle, returns a new battlescene with the two entities involved
-    // TODO: this won't work. move this out of this class or pass in the entities as parameters
-    public static BattleScene startBattle(Player player, Enemy enemy){
-        return new BattleScene(player, enemy);
-    }
-
-    // method to check if the battle is over, returns true if not so isInBattle stays true
-    private boolean checkBattleEnd(){
-        ArrayList<Entity> battlers = new ArrayList<Entity>();
-        battlers.add(this.player);
-        battlers.add(this.enemy);
-        for(Entity battler : battlers){
-            if(battler.getEntityCurrentHealth() < 0){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Actual loop of battle method
-    private void battleLoop(){
-        while(this.isInBattle()){
-            this.determineFirst(this.player,this.enemy);
-            if(!checkBattleEnd()){
-                Entity loser = findLoser();
-                Entity winner = findWinner();
-                // Debug
-                System.out.println(loser.getEntityName() + "loses!");
-                System.out.println(winner.getEntityName() + "wins!");
-                this.setInBattle(false);
-            }
-
-        }
-    }
-
 
 
 
