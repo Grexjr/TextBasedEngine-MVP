@@ -4,164 +4,194 @@ import ety.Entity;
 import ety.Player;
 import ety.enemy.Enemy;
 import gui.parts.BattlePanel;
+import itm.healers.Healable;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 
 public class BattleController {
+    //TODO: Make end of battle better for player loss condition, enemy loss condition, run condition.
 
     // === VARIABLES AND FIELDS ===
     private final BattleScene battleScene;
     private final BattlePanel battlePanel;
+    private final Player player;
+    private final Enemy enemy;
 
 
     // === BATTLE CONTROLLER CONSTRUCTOR ===
     public BattleController(BattleScene bsc){
         this.battleScene = bsc;
         this.battlePanel = new BattlePanel(bsc.getEnemy().getEntityName());
+
+        this.player = bsc.getPlayer();
+        this.enemy = bsc.getEnemy();
+
         setUpActionListeners();
 
-        if(!this.battleScene.isPlayerTurn()){
-            this.battlePanel.getButtonPanel().setVisible(false);
-        }
-
         startBattle();
-        runBattleLoop();
     }
+
+    // === GETTERS AND SETTERS ===
+    public BattlePanel getBattlePanel() {return battlePanel;}
+
 
     // === CONSTRUCTOR METHODS ===
 
     // method to set the action listeners for the buttons
     private void setUpActionListeners(){
-        this.battlePanel.getAttackButton().addActionListener(e -> {
+        this.battlePanel.getAttackButton().addActionListener(handlePlayerAttack());
 
-            this.handlePlayerAttack();
+        this.battlePanel.getDefendButton().addActionListener(handlePlayerDefend());
 
-            if(checkLoss(this.battleScene.getEnemy())){
-                runLoss(this.battleScene.getEnemy());
+        this.battlePanel.getItemButton().addActionListener(handlePlayerItem());
+
+        this.battlePanel.getRunButton().addActionListener(handlePlayerRun());
+    }
+
+    // button handling methods
+    private ActionListener handlePlayerAttack(){
+        return _ -> {
+            this.battlePanel.printPlayerAttack(this.enemy.getEntityName());
+            this.battleScene.attackEntity(this.player,this.enemy);
+            if(checkWin()){
+                System.exit(0);
             }
-
-            finishPlayerTurn();
-        });
-        this.battlePanel.getDefendButton().addActionListener(e -> {
-            this.handlePlayerDefense();
-            finishPlayerTurn();
-        });
-        this.battlePanel.getItemButton().addActionListener(e -> {
-            this.handlePlayerItemUse();
-            finishPlayerTurn();
-        });
-        this.battlePanel.getRunButton().addActionListener(e -> {
-            this.handlePlayerRun();
-            finishPlayerTurn();
-        });
+            this.battlePanel.printHealth(this.enemy);
+            endPlayerTurn();
+        };
     }
 
-
-    // === GETTERS AND SETTERS ===
-    public BattleScene getBattleScene() {return this.battleScene;}
-    public BattlePanel getBattlePanel() {return this.battlePanel;}
-
-
-    // === OTHER METHODS === | TODO: Check if some of these should just go into battlescene
-
-    // -- Helper Methods --
-    // method to finish up the player turn
-    private void finishPlayerTurn(){
-        this.battlePanel.hide(this.battlePanel.getButtonPanel());
-        this.battleScene.setPlayerTurn(false);
-        SwingUtilities.invokeLater(this::runEnemyTurn);
-    }
-
-    // method to check if entity loses
-    private boolean checkLoss(Entity entity){
-        return entity.getEntityCurrentHealth() <= 0;
-    }
-
-    // method to run the loss of the entity
-    private void runLoss(Entity entity){ //TODO: add better functionality
-        this.battlePanel.printLoss(entity);
-
-        // Debug and temporary
-        if(entity instanceof Player){
-            // Debug
-            System.out.println(this.battleScene.getPlayer() + " has lost.");
-            System.exit(0);
-        }
-        if(entity instanceof Enemy){
-            // Debug
-            System.out.println("Battle won player");
-            System.exit(0);
-        }
-    }
-
-    // method to handle attacks
-    private void handlePlayerAttack(){
-        if(this.battleScene.isPlayerTurn()){
-            this.battlePanel.printPlayerAttack(this.battleScene.getEnemy().getEntityName());
-            this.battleScene.attackEntity(this.battleScene.getPlayer(),this.battleScene.getEnemy());
-            this.battlePanel.printHealth(this.battleScene.getEnemy());
-        }
-    }
-
-    // method to handle defense
-    private void handlePlayerDefense(){
-        if(this.battleScene.isPlayerTurn()){
+    private ActionListener handlePlayerDefend(){
+        return _ -> {
             this.battlePanel.printPlayerDefend();
-        }
+            this.player.guard();
+            endPlayerTurn();
+            this.player.getEntityStatBlock().resetTempStats();
+        };
     }
 
-    // method to handle item use
-    private void handlePlayerItemUse(){
-        if(this.battleScene.isPlayerTurn()){
+    private ActionListener handlePlayerItem() {
+        return _ -> {
             this.battlePanel.printPlayerItemUse();
+            if(this.player.getPlayerInventory().checkEmpty()){
+                this.battlePanel.printNoItems();
+            } else{
+                // TEMP: Hard coded for just using healable, need to expand and genericize this.
+                // TEMP: only takes from first slot, no choice | TODO: Add choice for items
+                this.battlePanel.printSuccessfulItemUse(this.player,this.player.getPlayerInventory().getFromIndex(0));
+                this.player.useItem(this.player.getPlayerInventory().getFromIndex(0));
+                System.out.println("useItem.success");
+            }
+        };
+    }
+
+    private ActionListener handlePlayerRun(){ // TODO: Refactor and make smaller
+        return _ -> {
+            boolean runSuccess = this.player.run(this.enemy);
+
+            if(runSuccess){
+
+                endBattle(); // First so set in false so ending player turn doesn't run enemy turn
+                endPlayerTurn();
+
+                // Debug
+                System.out.println("Run Successful.");
+
+                this.battlePanel.printSuccessfulRun(this.player.getEntityName());
+
+                new Timer(1000,_ -> System.exit(0)).start(); // TODO: Better end function
+
+            } else{
+                // Debug
+                System.out.println("Run failed.");
+
+                this.battlePanel.printFailedRun(this.player.getEntityName());
+                endPlayerTurn();
+            }
+        };
+    }
+
+
+    // === PLAYER TURN METHODS ===
+    private void endPlayerTurn(){
+        this.battlePanel.disableButtons();
+        if(this.battleScene.getFirstGoer() instanceof Player){
+            runEnemyTurn();
+        } else{
+            runTurnSetOrder();
         }
     }
 
-    // method to handle running
-    private void handlePlayerRun(){
-        if(this.battleScene.isPlayerTurn()){
-            this.battlePanel.printPlayerRun();
-        }
-    }
-
-    // === BATTLE PROGRESS METHODS ===
-    // player turn method
+    // running player turn
     private void runPlayerTurn(){
+        if(this.battleScene.isInBattle() && !checkLoss()){
             this.battlePanel.printPlayerStartTurn();
-            this.battleScene.setPlayerTurn(true);
-            this.battlePanel.getButtonPanel().setVisible(true);
+            this.battlePanel.enableButtons();
+        }
     }
 
-    // enemy turn method
+
+    // === ENEMY TURN METHODS ===
+    // TODO: Add an endEnemyTurn method so you can check in there for battle ends
     private void runEnemyTurn(){
-        switch(this.battleScene.getEnemy().makeBattleChoice()){
-            default:
-                this.battlePanel.printEnemyAttack(this.battleScene.getEnemy());
-                this.battleScene.attackEntity(this.battleScene.getEnemy(),this.battleScene.getPlayer());
-                this.battlePanel.printHealth(this.battleScene.getPlayer());
-                if(checkLoss(this.battleScene.getPlayer())){
-                    runLoss(this.battleScene.getPlayer());
-                }
-                break;
+        if(this.battleScene.isInBattle()){
+            this.battlePanel.printEnemyAttack(this.enemy);
+            this.battleScene.attackEntity(this.enemy,this.player);
+            this.battlePanel.printHealth(this.player);
+            if(this.battleScene.getFirstGoer() instanceof Enemy){
+                runPlayerTurn();
+            } else{
+                runTurnSetOrder();
+            }
         }
-        runPlayerTurn();
     }
 
-    // start battle method
-    private void startBattle(){ // in case more logic is added
-        this.battlePanel.printBattleStart(this.battleScene.getPlayer(),this.battleScene.getEnemy());
-    }
-
-    // battle loop method
-    private void runBattleLoop(){
-        if(this.battleScene.determineTurn(this.battleScene.getPlayer(),this.battleScene.getEnemy()) instanceof Player){
+    // === BATTLE START METHODS ===
+    private void startBattle(){
+        this.battlePanel.printBattleStart(this.player,this.enemy);
+        this.battlePanel.disableButtons();
+        if(this.battleScene.getFirstGoer() instanceof Player){
             runPlayerTurn();
-        }else{
-        SwingUtilities.invokeLater(this::runEnemyTurn);
+        } else {
+            runEnemyTurn();
         }
     }
 
+    // === BATTLE END METHODS ===
+    //TODO: Refactor the below with battleExits and one singular method
+
+    // method to check if battle won
+    private boolean checkWin(){
+        return this.enemy.isDead();
+    }
+
+    // method to check if battle lost
+    private boolean checkLoss(){
+        return this.player.isDead();
+    }
+
+    // method to end the battle
+    private void endBattle(){
+        this.battleScene.setInBattle(false);
+        // If checkWin vs if checkLoss vs returning run
+        //TODO: Add better functionality for this; exit codes, etc.
+    }
 
 
+    // === BATTLE PROGRESSION METHODS ===
+    private boolean checkFirstGoerIsPlayer(){
+        Entity firstGoer = this.battleScene.determineWhoGoesFirst(this.player,this.enemy);
+        return  firstGoer instanceof Player;
+    }
 
+    private void runTurnSetOrder(){
+        if(checkFirstGoerIsPlayer()){
+            this.battleScene.setFirstGoer(this.player);
+            runPlayerTurn();
+        } else {
+            this.battleScene.setFirstGoer(this.enemy);
+            runEnemyTurn();
+        }
+    }
 }

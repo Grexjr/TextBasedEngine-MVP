@@ -2,6 +2,7 @@ package gui.parts;
 
 import ety.Entity;
 import ety.Player;
+import itm.Item;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,9 +57,23 @@ public class BattlePanel extends JPanel {
     // === OTHER METHODS ===
 
     // -- Helper Methods --
+    // method to refresh
+    public void refresh(){
+        this.revalidate();
+        this.repaint();
+    }
+
+    // method to clear
+    public void clear(){
+        this.removeAll();
+        refresh();
+    }
+
+
     // method to always have scrollbar go to the bottom -- added to log method so everytime logged it goes to bottom
     public void scrollDown(){
-        this.battleScroller.getVerticalScrollBar().setValue(battleScroller.getVerticalScrollBar().getMaximum());
+        JScrollBar scroller = this.battleScroller.getVerticalScrollBar();
+        scroller.setValue(scroller.getMaximum());
     }
 
     // method to log something on the text field
@@ -77,6 +92,22 @@ public class BattlePanel extends JPanel {
         part.setVisible(true);
     }
 
+    // method to enable buttons
+    public void enableButtons(){
+        this.getAttackButton().setEnabled(true);
+        this.getDefendButton().setEnabled(true);
+        this.getItemButton().setEnabled(true);
+        this.getRunButton().setEnabled(true);
+    }
+
+    // method to disable buttons
+    public void disableButtons(){
+        this.getAttackButton().setEnabled(false);
+        this.getDefendButton().setEnabled(false);
+        this.getItemButton().setEnabled(false);
+        this.getRunButton().setEnabled(false);
+    }
+
 
     // -- Printing Methods --
     // method to print battle start
@@ -88,10 +119,17 @@ public class BattlePanel extends JPanel {
                 " has begun!\n");
     }
 
-    // method to print health | TODO: Should this go here?
+    // method to print battle over
+    public void printBattleOver(){
+        this.log("Battle over!\n\n\n");
+    }
+
+    // method to print health
     public void printHealth(Entity battler){
-        this.log(battler.getEntityName() + " health: " + battler.getEntityCurrentHealth() + "/" +
-                battler.getEntityMaxHealth() +"\n");
+        int currentHealth = battler.getEntityStatBlock().getEntityCurrentHealth();
+        int maxHealth = battler.getEntityStatBlock().getEntityMaxHealth();
+
+        this.log(battler.getEntityName() + " health: " + currentHealth + "/" + maxHealth +"\n");
     }
 
     // method to print loss
@@ -105,7 +143,7 @@ public class BattlePanel extends JPanel {
 
     // print player turn start
     public void printPlayerStartTurn(){
-        this.log("Player act time!");
+        this.log("\n\nPlayer act time!\n\n");
     }
 
     // - Methods to print button presses -
@@ -124,11 +162,32 @@ public class BattlePanel extends JPanel {
         this.log("You try to use an item!");
     }
 
-    // player run
-    public void printPlayerRun(){
-        this.log("You attempt to escape!");
+    // player item use success | TODO: model other methods off of this one to make them more generic
+    public void printSuccessfulItemUse(Entity entity, Item item){
+        this.log("\n" + entity.getEntityName() + " uses " + item.getItemName() + "!\n");
     }
 
+    // player has no items print
+    public void printNoItems(){
+        this.log("You have no items!\n");
+    }
+
+    // print entity run
+    private void printRun(String runnerName){
+        this.log(runnerName + " attempted to escape!");
+    }
+
+    // print entity successful run
+    public void printSuccessfulRun(String runnerName){
+        printRun(runnerName);
+        this.log(runnerName +  " escaped!\n");
+    }
+
+    // print entity failed run
+    public void printFailedRun(String runnerName){
+        printRun(runnerName);
+        this.log(runnerName + " failed to escape!\n");
+    }
 
     // - Methods to print enemy-related things -
     // enemy attack
