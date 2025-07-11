@@ -112,13 +112,12 @@ public class Tester {
 
     }
 
-    // The tester main method
-    public static void main(String[] args){
-
+    // TESTING THE MAIN RUN
+    private static void runMain(){
         GameWindow gameWindow = new GameWindow(800,600,"Game");
         Player player = new Player("Player");
         player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
-        Enemy slime = new Slime(5);
+        Enemy slime = new Slime(1);
         System.out.println(player.getPlayerInventory().getInventoryContents());
         BattleScene bsc = new BattleScene(player,slime);
 
@@ -127,6 +126,12 @@ public class Tester {
         gameWindow.add(bc.getBattlePanel());
 
         gameWindow.refresh();
+    }
+
+    // The tester main method
+    public static void main(String[] args){
+
+        runMain();
 
         //testGoFirstMethod(100000);
 
