@@ -32,6 +32,13 @@ public abstract class GamePanel extends JPanel {
 
 
     // === GETTERS AND SETTERS ===
+    public JTextArea getTextLog() {return textLog;}
+
+    public JScrollPane getBattleScroller() {return battleScroller;}
+
+    public JLabel getTitleLabel() {return titleLabel;}
+
+    public JPanel getButtonPanel() {return buttonPanel;}
 
 
 

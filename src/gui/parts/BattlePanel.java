@@ -76,7 +76,7 @@ public class BattlePanel extends JPanel {
         scroller.setValue(scroller.getMaximum());
     }
 
-    // method to log something on the text field
+    // method to log something on the text field -- move this to
     public void log(String message){
         this.textLog.append(message + "\n");
         SwingUtilities.invokeLater(this::scrollDown);
