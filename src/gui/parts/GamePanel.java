@@ -9,8 +9,8 @@ import java.awt.*;
 public abstract class GamePanel extends JPanel {
 
     // === VARIABLES AND FIELDS ===
-    private final JTextArea textLog;
-    private final JScrollPane battleScroller;
+    private final TextLog textLog;
+    private final JScrollPane scroller;
     private final JLabel titleLabel;
     private final JPanel buttonPanel;
 
@@ -19,12 +19,12 @@ public abstract class GamePanel extends JPanel {
     public GamePanel(JLabel titleLabel){
         // Title label; supered by each subclass
         this.titleLabel = titleLabel;
+        this.add(titleLabel,BorderLayout.NORTH);
 
         // TextLog, shared by ALL panels... at least except for the main menu panel (set invisible for that one)
-        this.textLog = new JTextArea(30,65);
-        this.textLog.setEditable(false);
-        this.battleScroller = new JScrollPane(textLog);
-        this.add(battleScroller, BorderLayout.CENTER);
+        this.textLog = new TextLog();
+        this.scroller = new JScrollPane(textLog);
+        this.add(scroller, BorderLayout.CENTER);
 
         // Creating the buttons panel - no JLabel by default, added by subclasses individually
         this.buttonPanel = new JPanel(new FlowLayout());
@@ -32,14 +32,27 @@ public abstract class GamePanel extends JPanel {
 
 
     // === GETTERS AND SETTERS ===
-    public JTextArea getTextLog() {return textLog;}
+    public TextLog getTextLog() {return textLog;}
 
-    public JScrollPane getBattleScroller() {return battleScroller;}
+    public JScrollPane getBattleScroller() {return scroller;}
 
     public JLabel getTitleLabel() {return titleLabel;}
 
     public JPanel getButtonPanel() {return buttonPanel;}
 
+
+    // === HELPER METHODS ===
+    // always scroll to bottom of text
+    public void scrollDown(){
+        JScrollBar scroller = this.scroller.getVerticalScrollBar();
+        scroller.setValue(scroller.getMaximum());
+    }
+
+    // printing text for any panel
+    public void print(String message){
+        this.textLog.log(message);
+        SwingUtilities.invokeLater(this::scrollDown);
+    }
 
 
 

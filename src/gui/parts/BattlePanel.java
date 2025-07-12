@@ -6,28 +6,17 @@ import itm.Item;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
-public class BattlePanel extends JPanel {
+public class BattlePanel extends GamePanel {
 
     // === VARIABLES AND FIELDS ===
-    private final JTextArea textLog;
-    private final JScrollPane battleScroller;
     private final JButton attackButton, defendButton, itemButton, runButton;
     private final JPanel buttonPanel;
 
 
     // === THE CONSTRUCTOR ===
     public BattlePanel(String enemyName){
-        // Creating the title label
-        JLabel titleLabel = new JLabel("Battle versus " + enemyName);
-        this.add(titleLabel, BorderLayout.NORTH);
-
-        // Creating the text panel
-        this.textLog = new JTextArea(30,65);
-        this.textLog.setEditable(false);
-        this.battleScroller = new JScrollPane(textLog);
-        this.add(battleScroller,BorderLayout.CENTER);
+        super(new JLabel("Battle versus " + enemyName));
 
         //add all buttons, for now just do manual below | TODO: Use enum or class(?) for future
         this.attackButton = new JButton("Attack");
@@ -69,19 +58,6 @@ public class BattlePanel extends JPanel {
         refresh();
     }
 
-
-    // method to always have scrollbar go to the bottom -- added to log method so everytime logged it goes to bottom
-    public void scrollDown(){
-        JScrollBar scroller = this.battleScroller.getVerticalScrollBar();
-        scroller.setValue(scroller.getMaximum());
-    }
-
-    // method to log something on the text field -- move this to
-    public void log(String message){
-        this.textLog.append(message + "\n");
-        SwingUtilities.invokeLater(this::scrollDown);
-    }
-
     // method to hide a component
     public void hide(Component part){
         part.setVisible(false);
@@ -112,7 +88,7 @@ public class BattlePanel extends JPanel {
     // -- Printing Methods --
     // method to print battle start
     public void printBattleStart(Entity player, Entity enemy){
-        this.log("The battle between " +
+        this.print("The battle between " +
                 player.getEntityName() +
                 " and " +
                 enemy.getEntityName() +
@@ -121,7 +97,7 @@ public class BattlePanel extends JPanel {
 
     // method to print battle over
     public void printBattleOver(){
-        this.log("Battle over!\n\n\n");
+        this.print("Battle over!\n\n\n");
     }
 
     // method to print health
@@ -129,76 +105,63 @@ public class BattlePanel extends JPanel {
         int currentHealth = battler.getEntityStatBlock().getEntityCurrentHealth();
         int maxHealth = battler.getEntityStatBlock().getEntityMaxHealth();
 
-        this.log(battler.getEntityName() + " health: " + currentHealth + "/" + maxHealth +"\n");
+        this.print(battler.getEntityName() + " health: " + currentHealth + "/" + maxHealth +"\n");
     }
 
     // method to print loss
     public void printLoss(Entity finisher){
         if(finisher instanceof Player){
-            this.log(finisher.getEntityName() + " has lost!");
+            this.print(finisher.getEntityName() + " has lost!");
         } else{
-            this.log(finisher.getEntityName() + " has won!");
+            this.print(finisher.getEntityName() + " has won!");
         }
     }
 
-    // print player turn start
-    public void printPlayerStartTurn(){
-        this.log("\n\nPlayer act time!\n\n");
+    // generic start turn print method
+    public void printStartTurn(Entity starter){
+        this.print("\n\n" + starter.getEntityName() + " act time!\n\n");
     }
 
-    // - Methods to print button presses -
-    // player attack
-    public void printPlayerAttack(String enemyName){
-        this.log("You attack the " + enemyName +"!");
+    // generic attack print method
+    public void printAttack(Entity attacker, Entity target){
+        this.print(attacker.getEntityName() + " attacks " + target.getEntityName() + "!");
     }
 
-    // player defend
-    public void printPlayerDefend(){
-        this.log("You defend!");
+    // generic defend print method
+    public void printDefend(Entity defender){
+        this.print(defender.getEntityName() + " defends!");
     }
 
-    // player item use
-    public void printPlayerItemUse(){
-        this.log("You try to use an item!");
+    // generic item use attempt print method
+    public void printItemUseAttempt(Entity user){
+        this.print(user.getEntityName() + " tries to use an item!");
     }
 
-    // player item use success | TODO: model other methods off of this one to make them more generic
+    // generic no items print
+    public void printNoItems(Entity user){
+        this.print(user.getEntityName() + " has no items!");
+    }
+
+    // generic item use success print
     public void printSuccessfulItemUse(Entity entity, Item item){
-        this.log("\n" + entity.getEntityName() + " uses " + item.getItemName() + "!\n");
+        this.print("\n" + entity.getEntityName() + " uses " + item.getItemName() + "!\n");
     }
 
-    // player has no items print
-    public void printNoItems(){
-        this.log("You have no items!\n");
-    }
-
-    // print entity run
+    // print generic entity run
     private void printRun(String runnerName){
-        this.log(runnerName + " attempted to escape!");
+        this.print(runnerName + " attempted to escape!");
     }
 
-    // print entity successful run
+    // print generic entity successful run
     public void printSuccessfulRun(String runnerName){
         printRun(runnerName);
-        this.log(runnerName +  " escaped!\n");
+        this.print(runnerName +  " escaped!\n");
     }
 
     // print entity failed run
     public void printFailedRun(String runnerName){
         printRun(runnerName);
-        this.log(runnerName + " failed to escape!\n");
+        this.print(runnerName + " failed to escape!\n");
     }
-
-    // - Methods to print enemy-related things -
-    // enemy attack
-    public void printEnemyAttack(Entity enemy){
-        this.log(enemy.getEntityName() + " attacks!\n");
-    }
-
-
-
-
-
-
 
 }

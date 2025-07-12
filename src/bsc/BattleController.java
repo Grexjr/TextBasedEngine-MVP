@@ -52,7 +52,7 @@ public class BattleController {
     // button handling methods
     private ActionListener handlePlayerAttack(){
         return _ -> {
-            this.battlePanel.printPlayerAttack(this.enemy.getEntityName());
+            this.battlePanel.printAttack(this.player,this.enemy);
             this.battleScene.attackEntity(this.player,this.enemy);
             if(checkWin()){
                 System.exit(0);
@@ -64,7 +64,7 @@ public class BattleController {
 
     private ActionListener handlePlayerDefend(){
         return _ -> {
-            this.battlePanel.printPlayerDefend();
+            this.battlePanel.printDefend(this.player);
             this.player.guard();
             endPlayerTurn();
             this.player.getEntityStatBlock().resetTempStats();
@@ -73,9 +73,9 @@ public class BattleController {
 
     private ActionListener handlePlayerItem() {
         return _ -> {
-            this.battlePanel.printPlayerItemUse();
+            this.battlePanel.printItemUseAttempt(this.player);
             if(this.player.getPlayerInventory().checkEmpty()){
-                this.battlePanel.printNoItems();
+                this.battlePanel.printNoItems(this.player);
             } else{
                 // TEMP: Hard coded for just using healable, need to expand and genericize this.
                 // TEMP: only takes from first slot, no choice | TODO: Add choice for items
@@ -126,7 +126,7 @@ public class BattleController {
     // running player turn
     private void runPlayerTurn(){
         if(this.battleScene.isInBattle() && !checkLoss()){
-            this.battlePanel.printPlayerStartTurn();
+            this.battlePanel.printStartTurn(this.player);
             this.battlePanel.enableButtons();
         }
     }
@@ -136,7 +136,7 @@ public class BattleController {
     // TODO: Add an endEnemyTurn method so you can check in there for battle ends
     private void runEnemyTurn(){
         if(this.battleScene.isInBattle()){
-            this.battlePanel.printEnemyAttack(this.enemy);
+            this.battlePanel.printAttack(this.enemy,this.player);
             this.battleScene.attackEntity(this.enemy,this.player);
             this.battlePanel.printHealth(this.player);
             if(this.battleScene.getFirstGoer() instanceof Enemy){
