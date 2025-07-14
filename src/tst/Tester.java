@@ -5,8 +5,8 @@ import bsc.BattleScene;
 import ety.Player;
 import ety.enemy.Enemy;
 import ety.enemy.Slime;
-import gui.GameWindow;
-import gui.parts.BattlePanel;
+import gui.frame.GameWindow;
+import gui.parts.TextLog;
 import itm.healers.Healable;
 import itm.healers.HealingItem;
 
@@ -121,11 +121,13 @@ public class Tester {
         System.out.println(player.getPlayerInventory().getInventoryContents());
         BattleScene bsc = new BattleScene(player,slime);
 
-        BattleController bc = new BattleController(bsc);
+        BattleController bc = new BattleController(bsc, new TextLog());
 
         gameWindow.add(bc.getBattlePanel());
 
         gameWindow.refresh();
+
+        bc.startBattle();
     }
 
     // The tester main method

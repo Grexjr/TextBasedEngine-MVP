@@ -1,33 +1,37 @@
-package gui.parts;
+package gui.scenes;
+
+import gui.parts.ButtonPanel;
+import gui.parts.TextLog;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.EnumMap;
 
 ///  GENERIC GAME PANEL INHERITED BY BATTLE PANEL AND MAIN PANEL TO PRESERVE TEXT LOG AND NECESSARY COMPONENTS
 /// Abstract since this class will never be instantiated directly, only through its subclasses
 
-public abstract class GamePanel extends JPanel {
+public abstract class GameGUI extends JPanel {
 
     // === VARIABLES AND FIELDS ===
     private final TextLog textLog;
     private final JScrollPane scroller;
     private final JLabel titleLabel;
-    private final JPanel buttonPanel;
+    private final ButtonPanel buttonPanel;
 
 
     // === CONSTRUCTOR ===
-    public GamePanel(JLabel titleLabel){
+    public GameGUI(JLabel titleLabel, TextLog log){
         // Title label; supered by each subclass
         this.titleLabel = titleLabel;
         this.add(titleLabel,BorderLayout.NORTH);
 
         // TextLog, shared by ALL panels... at least except for the main menu panel (set invisible for that one)
-        this.textLog = new TextLog();
+        this.textLog = log;
         this.scroller = new JScrollPane(textLog);
         this.add(scroller, BorderLayout.CENTER);
 
         // Creating the buttons panel - no JLabel by default, added by subclasses individually
-        this.buttonPanel = new JPanel(new FlowLayout());
+        this.buttonPanel = new ButtonPanel();
     }
 
 
@@ -38,7 +42,7 @@ public abstract class GamePanel extends JPanel {
 
     public JLabel getTitleLabel() {return titleLabel;}
 
-    public JPanel getButtonPanel() {return buttonPanel;}
+    public ButtonPanel getButtonPanel() {return buttonPanel;}
 
 
     // === HELPER METHODS ===
@@ -53,6 +57,30 @@ public abstract class GamePanel extends JPanel {
         this.textLog.log(message);
         SwingUtilities.invokeLater(this::scrollDown);
     }
+
+    // -- Helper Methods --
+    // method to refresh -- DO I need this or just on the base frame's content panel?
+    public void refresh(){
+        this.revalidate();
+        this.repaint();
+    }
+
+    // method to clear
+    public void clear(){
+        this.removeAll();
+        refresh();
+    }
+
+    // method to hide a component
+    public void hide(Component part){
+        part.setVisible(false);
+    }
+
+    // method to show a component
+    public void show(Component part){
+        part.setVisible(true);
+    }
+
 
 
 

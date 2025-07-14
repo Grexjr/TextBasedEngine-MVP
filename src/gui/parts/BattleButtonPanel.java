@@ -1,0 +1,31 @@
+package gui.parts;
+
+
+import bsc.BattleController;
+import gui.parts.buttons.BattleButton;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class BattleButtonPanel extends ButtonPanel {
+
+    // === VARIABLES AND FIELDS ===
+
+
+    // === CONSTRUCTOR ===
+    public BattleButtonPanel(BattleController controller){
+        // Set up panel peripheries
+        this.add(new JLabel("Actions:"), BorderLayout.NORTH);
+
+        // Set up the buttons
+        for(BattleButton b : BattleButton.values()){
+            JButton btn = new JButton(b.getButtonDisplayName());
+            btn.addActionListener(_ -> b.performAction(controller));
+            this.add(btn);
+        }
+
+    }
+
+
+
+}
