@@ -45,7 +45,7 @@ public enum BattleButton {
     public Consumer<BattleController> getButtonAction() {return buttonAction;}
 
 
-    // --- Central Methods ---
+    // --- Button Actions ---
     public void performAction(BattleController controller){
         this.buttonAction.accept(controller);
     }

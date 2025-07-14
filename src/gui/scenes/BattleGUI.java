@@ -15,27 +15,21 @@ public class BattleGUI extends GameGUI {
 
     // === VARIABLES AND FIELDS ===
     private final JButton attackButton, defendButton, itemButton, runButton;
-    private final ButtonPanel buttonPanel;
 
 
     // === THE CONSTRUCTOR ===
     public BattleGUI(BattleController controller, String enemyName, TextLog log){
-        super(new JLabel("Battle versus " + enemyName),log);
+        super(new JLabel("Battle versus " + enemyName),log, new BattleButtonPanel(controller));
 
         //add all buttons, for now just do manual below | TODO: Use enum or class(?) for future
         this.attackButton = new JButton("Attack");
         this.defendButton = new JButton("Defend");
         this.itemButton = new JButton("Items");
         this.runButton = new JButton("Run");
-
-        // Creating the buttons panel
-        this.buttonPanel = new BattleButtonPanel(controller);
-        this.add(buttonPanel,BorderLayout.SOUTH);
     }
 
 
     // === GETTERS AND SETTERS ===
-    public ButtonPanel getButtonPanel() {return this.buttonPanel;}
     public JButton getAttackButton() {return this.attackButton;}
     public JButton getDefendButton() {return this.defendButton;}
     public JButton getItemButton() {return this.itemButton;}

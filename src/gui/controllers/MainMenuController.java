@@ -1,0 +1,42 @@
+package gui.controllers;
+
+import gui.scenes.MainMenuGUI;
+
+public class MainMenuController {
+
+    // === VARIABLES AND FIELDS ===
+    private final MainMenuGUI mainMenuPanel;
+
+    // === CONSTRUCTOR ===
+    public MainMenuController(){
+        this.mainMenuPanel = new MainMenuGUI();
+    }
+
+    // === GETTERS ===
+    public MainMenuGUI getMainMenuPanel() {return mainMenuPanel;}
+
+
+    // === BUTTON METHODS ===
+    public void handleNewGame(){
+        //TEMP
+        System.out.println("Not yet implemented!");
+    }
+
+    public void handleContinue(){
+        //TEMP
+        System.out.println("Not yet implemented!");
+    }
+
+    public void handleSettings(){
+        //TEMP
+        System.out.println("Not yet implemented!");
+    }
+
+    public void handleQuit(){
+        System.exit(0);
+    }
+
+
+
+
+}

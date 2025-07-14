@@ -17,7 +17,7 @@ public class BattleButtonPanel extends ButtonPanel {
         // Set up panel peripheries
         this.add(new JLabel("Actions:"), BorderLayout.NORTH);
 
-        // Set up the buttons
+        // Set up the buttons | TODO: Abstract this to general ButtonPanel, then override it
         for(BattleButton b : BattleButton.values()){
             JButton btn = new JButton(b.getButtonDisplayName());
             btn.addActionListener(_ -> b.performAction(controller));

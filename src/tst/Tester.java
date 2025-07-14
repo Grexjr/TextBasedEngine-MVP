@@ -7,6 +7,7 @@ import ety.enemy.Enemy;
 import ety.enemy.Slime;
 import gui.frame.GameWindow;
 import gui.parts.TextLog;
+import gui.scenes.MainMenuGUI;
 import itm.healers.Healable;
 import itm.healers.HealingItem;
 
@@ -134,6 +135,8 @@ public class Tester {
     public static void main(String[] args){
 
         runMain();
+       // GameWindow gameWindow = new GameWindow(800,600,"Game");
+      //  gameWindow.add(new MainMenuGUI());
 
         //testGoFirstMethod(100000);
 

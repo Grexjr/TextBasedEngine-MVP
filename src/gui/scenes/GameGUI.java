@@ -20,7 +20,7 @@ public abstract class GameGUI extends JPanel {
 
 
     // === CONSTRUCTOR ===
-    public GameGUI(JLabel titleLabel, TextLog log){
+    public GameGUI(JLabel titleLabel, TextLog log, ButtonPanel panel){
         // Title label; supered by each subclass
         this.titleLabel = titleLabel;
         this.add(titleLabel,BorderLayout.NORTH);
@@ -31,7 +31,8 @@ public abstract class GameGUI extends JPanel {
         this.add(scroller, BorderLayout.CENTER);
 
         // Creating the buttons panel - no JLabel by default, added by subclasses individually
-        this.buttonPanel = new ButtonPanel();
+        this.buttonPanel = panel;
+        this.add(buttonPanel,BorderLayout.SOUTH);
     }
 
 
