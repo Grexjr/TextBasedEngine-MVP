@@ -19,8 +19,6 @@ public class TextLog extends JTextArea {
 
 
     // === HELPER METHODS ===
-    // immediately scrolls to the bottom of the pane when new text is added
-
 
     // === BASIC METHODS ===
     // generic log method

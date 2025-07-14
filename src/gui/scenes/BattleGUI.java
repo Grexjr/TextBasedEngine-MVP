@@ -1,22 +1,26 @@
-package gui.parts;
+package gui.scenes;
 
+import bsc.BattleController;
 import ety.Entity;
 import ety.Player;
+import gui.parts.BattleButtonPanel;
+import gui.parts.ButtonPanel;
+import gui.parts.TextLog;
 import itm.Item;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class BattlePanel extends GamePanel {
+public class BattleGUI extends GameGUI {
 
     // === VARIABLES AND FIELDS ===
     private final JButton attackButton, defendButton, itemButton, runButton;
-    private final JPanel buttonPanel;
+    private final ButtonPanel buttonPanel;
 
 
     // === THE CONSTRUCTOR ===
-    public BattlePanel(String enemyName){
-        super(new JLabel("Battle versus " + enemyName));
+    public BattleGUI(BattleController controller, String enemyName, TextLog log){
+        super(new JLabel("Battle versus " + enemyName),log);
 
         //add all buttons, for now just do manual below | TODO: Use enum or class(?) for future
         this.attackButton = new JButton("Attack");
@@ -25,18 +29,13 @@ public class BattlePanel extends GamePanel {
         this.runButton = new JButton("Run");
 
         // Creating the buttons panel
-        this.buttonPanel = new JPanel(new FlowLayout());
-        this.buttonPanel.add(new JLabel("Actions:"), BorderLayout.NORTH);
-        this.buttonPanel.add(this.attackButton);
-        this.buttonPanel.add(this.defendButton);
-        this.buttonPanel.add(this.itemButton);
-        this.buttonPanel.add(this.runButton);
+        this.buttonPanel = new BattleButtonPanel(controller);
         this.add(buttonPanel,BorderLayout.SOUTH);
     }
 
 
     // === GETTERS AND SETTERS ===
-    public JPanel getButtonPanel() {return this.buttonPanel;}
+    public ButtonPanel getButtonPanel() {return this.buttonPanel;}
     public JButton getAttackButton() {return this.attackButton;}
     public JButton getDefendButton() {return this.defendButton;}
     public JButton getItemButton() {return this.itemButton;}
@@ -44,31 +43,7 @@ public class BattlePanel extends GamePanel {
 
 
     // === OTHER METHODS ===
-
-    // -- Helper Methods --
-    // method to refresh
-    public void refresh(){
-        this.revalidate();
-        this.repaint();
-    }
-
-    // method to clear
-    public void clear(){
-        this.removeAll();
-        refresh();
-    }
-
-    // method to hide a component
-    public void hide(Component part){
-        part.setVisible(false);
-    }
-
-    // method to show a component
-    public void show(Component part){
-        part.setVisible(true);
-    }
-
-    // method to enable buttons
+    // method to enable buttons | TODO: Override these from gamePanel
     public void enableButtons(){
         this.getAttackButton().setEnabled(true);
         this.getDefendButton().setEnabled(true);
