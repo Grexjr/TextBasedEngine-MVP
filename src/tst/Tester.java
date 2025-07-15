@@ -1,16 +1,16 @@
 package tst;
 
-import bsc.BattleController;
-import bsc.BattleScene;
-import ety.Player;
-import ety.enemy.Enemy;
-import ety.enemy.Slime;
-import gui.controllers.MainMenuController;
-import gui.frame.GameWindow;
-import gui.parts.TextLog;
-import gui.scenes.MainMenuGUI;
-import itm.healers.Healable;
-import itm.healers.HealingItem;
+import controller.BattleController;
+import model.BattleScene;
+import model.ety.Player;
+import model.ety.enemy.Enemy;
+import model.ety.enemy.Slime;
+import controller.MainMenuController;
+import view.frame.GameWindow;
+import view.parts.TextLog;
+import view.scenes.MainMenuGUI;
+import model.itm.healers.Healable;
+import model.itm.healers.HealingItem;
 
 public class Tester {
 
