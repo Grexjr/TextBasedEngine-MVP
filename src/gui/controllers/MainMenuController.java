@@ -9,7 +9,7 @@ public class MainMenuController {
 
     // === CONSTRUCTOR ===
     public MainMenuController(){
-        this.mainMenuPanel = new MainMenuGUI();
+        this.mainMenuPanel = new MainMenuGUI(this);
     }
 
     // === GETTERS ===

@@ -5,6 +5,7 @@ import bsc.BattleScene;
 import ety.Player;
 import ety.enemy.Enemy;
 import ety.enemy.Slime;
+import gui.controllers.MainMenuController;
 import gui.frame.GameWindow;
 import gui.parts.TextLog;
 import gui.scenes.MainMenuGUI;
@@ -134,9 +135,10 @@ public class Tester {
     // The tester main method
     public static void main(String[] args){
 
-        runMain();
-       // GameWindow gameWindow = new GameWindow(800,600,"Game");
-      //  gameWindow.add(new MainMenuGUI());
+        //runMain();
+        GameWindow gameWindow = new GameWindow(800,600,"Game");
+        gameWindow.add(new MainMenuGUI(new MainMenuController()));
+        gameWindow.refresh();
 
         //testGoFirstMethod(100000);
 

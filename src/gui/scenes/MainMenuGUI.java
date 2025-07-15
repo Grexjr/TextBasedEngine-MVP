@@ -14,10 +14,8 @@ public class MainMenuGUI extends GameGUI{
     // === CONSTRUCTOR ===
     public MainMenuGUI(MainMenuController mmc){
         super(new JLabel("RogueCrawler Timescapes"),NULL_LOG,new MainMenuButtonPanel(mmc));
+        NULL_LOG.setVisible(false);
         NULL_LOG.setEnabled(false);
-
-        // buttons
-
 
     }
 
