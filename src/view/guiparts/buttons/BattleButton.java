@@ -1,4 +1,4 @@
-package view.parts.buttons;
+package view.guiparts.buttons;
 
 import controller.BattleController;
 

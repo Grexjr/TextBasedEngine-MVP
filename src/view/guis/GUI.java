@@ -1,7 +1,6 @@
-package view.scenes;
+package view.guis;
 
-import view.parts.ButtonPanel;
-import view.parts.TextLog;
+import view.guiparts.ButtonPanel;
 
 import javax.swing.*;
 import java.awt.*;

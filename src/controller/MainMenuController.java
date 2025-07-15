@@ -1,6 +1,6 @@
 package controller;
 
-import view.scenes.MainMenuGUI;
+import view.guis.MainMenuGUI;
 
 public class MainMenuController {
 

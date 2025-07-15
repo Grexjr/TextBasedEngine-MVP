@@ -1,10 +1,10 @@
-package view.scenes;
+package view.guis;
 
 import controller.BattleController;
 import model.ety.Entity;
 import model.ety.Player;
-import view.parts.BattleButtonPanel;
-import view.parts.TextLog;
+import view.guiparts.BattleButtonPanel;
+import view.guiparts.TextLog;
 import model.itm.Item;
 
 import javax.swing.*;

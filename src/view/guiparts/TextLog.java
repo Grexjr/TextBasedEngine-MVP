@@ -1,4 +1,4 @@
-package view.parts;
+package view.guiparts;
 
 import javax.swing.*;
 

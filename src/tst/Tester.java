@@ -1,17 +1,11 @@
 package tst;
 
-import controller.BattleController;
 import model.BattleScene;
 import model.ety.Player;
-import model.ety.enemy.Enemy;
 import model.ety.enemy.Slime;
 import controller.MainMenuController;
-import pmn.Main;
-import view.frame.GameWindow;
-import view.parts.TextLog;
-import view.scenes.MainMenuGUI;
-import model.itm.healers.Healable;
-import model.itm.healers.HealingItem;
+import view.guiparts.GameWindow;
+import view.guis.MainMenuGUI;
 
 public class Tester {
 

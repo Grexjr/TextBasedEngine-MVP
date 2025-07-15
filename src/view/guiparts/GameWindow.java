@@ -1,4 +1,4 @@
-package view.frame;
+package view.guiparts;
 
 import javax.swing.*;
 import java.awt.*;

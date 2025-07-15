@@ -1,7 +1,7 @@
-package view.parts;
+package view.guiparts;
 
 import controller.MainMenuController;
-import view.parts.buttons.MainMenuButton;
+import view.guiparts.buttons.MainMenuButton;
 
 import javax.swing.*;
 

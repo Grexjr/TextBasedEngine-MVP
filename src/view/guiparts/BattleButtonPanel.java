@@ -1,8 +1,8 @@
-package view.parts;
+package view.guiparts;
 
 
 import controller.BattleController;
-import view.parts.buttons.BattleButton;
+import view.guiparts.buttons.BattleButton;
 
 import javax.swing.*;
 import java.awt.*;

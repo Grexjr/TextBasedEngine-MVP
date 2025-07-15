@@ -3,8 +3,8 @@ package controller;
 import model.ety.Entity;
 import model.ety.Player;
 import model.ety.enemy.Enemy;
-import view.scenes.BattleGUI;
-import view.parts.TextLog;
+import view.guis.BattleGUI;
+import view.guiparts.TextLog;
 import model.BattleScene;
 
 import javax.swing.*;
