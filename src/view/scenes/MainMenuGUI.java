@@ -6,16 +6,17 @@ import view.parts.TextLog;
 
 import javax.swing.*;
 
-public class MainMenuGUI extends GameGUI{
+public class MainMenuGUI extends GUI {
 
     // === VARIABLES AND FIELDS ===
-    private static final TextLog NULL_LOG = new TextLog();
 
     // === CONSTRUCTOR ===
     public MainMenuGUI(MainMenuController mmc){
-        super(new JLabel("RogueCrawler Timescapes"),NULL_LOG,new MainMenuButtonPanel(mmc));
-        NULL_LOG.setVisible(false);
-        NULL_LOG.setEnabled(false);
+        super(new JLabel("RogueCrawler Timescapes"),new MainMenuButtonPanel(mmc));
+
+        // Load in an image -- make something simple!
+
+
 
     }
 

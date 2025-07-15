@@ -6,6 +6,7 @@ import model.ety.Player;
 import model.ety.enemy.Enemy;
 import model.ety.enemy.Slime;
 import controller.MainMenuController;
+import pmn.Main;
 import view.frame.GameWindow;
 import view.parts.TextLog;
 import view.scenes.MainMenuGUI;
@@ -116,28 +117,19 @@ public class Tester {
 
     // TESTING THE MAIN RUN
     private static void runMain(){
-        GameWindow gameWindow = new GameWindow(800,600,"Game");
-        Player player = new Player("Player");
-        player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
-        Enemy slime = new Slime(1);
-        System.out.println(player.getPlayerInventory().getInventoryContents());
-        BattleScene bsc = new BattleScene(player,slime);
 
-        BattleController bc = new BattleController(bsc, new TextLog());
-
-        gameWindow.add(bc.getBattlePanel());
-
-        gameWindow.refresh();
-
-        bc.startBattle();
     }
 
     // The tester main method
     public static void main(String[] args){
 
         //runMain();
-        GameWindow gameWindow = new GameWindow(800,600,"Game");
-        gameWindow.add(new MainMenuGUI(new MainMenuController()));
+
+        GameWindow gameWindow = new GameWindow(800,600,"ROGUE CRAWLER");
+        MainMenuController mmc = new MainMenuController();
+        MainMenuGUI mainMenu = new MainMenuGUI(mmc);
+
+        gameWindow.add(mainMenu);
         gameWindow.refresh();
 
         //testGoFirstMethod(100000);

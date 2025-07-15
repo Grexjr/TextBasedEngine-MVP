@@ -6,7 +6,7 @@ import java.awt.*;
 public class GameWindow {
 
     // === VARIABLES AND FIELDS ===
-    private JFrame baseFrame;
+    private final JFrame baseFrame;
 
 
     // === GAME WINDOW CONSTRUCTOR ===

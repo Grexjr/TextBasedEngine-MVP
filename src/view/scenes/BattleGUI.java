@@ -9,7 +9,7 @@ import model.itm.Item;
 
 import javax.swing.*;
 
-public class BattleGUI extends GameGUI {
+public class BattleGUI extends GameplayGUI {
 
     // === VARIABLES AND FIELDS ===
     private final JButton attackButton, defendButton, itemButton, runButton;
@@ -17,7 +17,7 @@ public class BattleGUI extends GameGUI {
 
     // === THE CONSTRUCTOR ===
     public BattleGUI(BattleController controller, String enemyName, TextLog log){
-        super(new JLabel("Battle versus " + enemyName),log, new BattleButtonPanel(controller));
+        super(log, new BattleButtonPanel(controller));
 
         //add all buttons, for now just do manual below | TODO: Use enum or class(?) for future
         this.attackButton = new JButton("Attack");
