@@ -1,22 +1,28 @@
 package controller;
 
 import view.ViewManager;
+import view.guiparts.buttons.MainMenuButton;
 import view.guis.MainMenuGUI;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class MainMenuController extends SceneController {
 
     // === VARIABLES AND FIELDS ===
-    private final MainMenuGUI mainMenuPanel;
 
     // === CONSTRUCTOR ===
-    public MainMenuController(ViewManager viewer){
-        super(viewer,new MainMenuGUI(null));
+    public MainMenuController(ViewManager viewer, MainMenuGUI menu){
+        super(viewer,menu);
 
-        this.mainMenuPanel = new MainMenuGUI(this);
+        for(MainMenuButton b : MainMenuButton.values()){
+            JButton btn = new JButton(b.getButtonDisplayName());
+            btn.addActionListener(_ -> b.performAction(this));
+            menu.getButtonPanel().add(btn);
+        }
     }
 
     // === GETTERS ===
-    public MainMenuGUI getMainMenuPanel() {return mainMenuPanel;}
 
 
     // === BUTTON METHODS ===
