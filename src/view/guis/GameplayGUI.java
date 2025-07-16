@@ -1,6 +1,6 @@
 package view.guis;
 
-import view.guiparts.ButtonPanel;
+import view.guiparts.buttonpanels.ButtonPanel;
 import view.guiparts.TextLog;
 
 import javax.swing.*;

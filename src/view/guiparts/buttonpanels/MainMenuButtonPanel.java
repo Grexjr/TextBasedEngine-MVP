@@ -1,4 +1,4 @@
-package view.guiparts;
+package view.guiparts.buttonpanels;
 
 import controller.MainMenuController;
 import view.guiparts.buttons.MainMenuButton;

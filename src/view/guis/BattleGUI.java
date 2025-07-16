@@ -3,7 +3,7 @@ package view.guis;
 import controller.BattleController;
 import model.ety.Entity;
 import model.ety.Player;
-import view.guiparts.BattleButtonPanel;
+import view.guiparts.buttonpanels.BattleButtonPanel;
 import view.guiparts.TextLog;
 import model.itm.Item;
 

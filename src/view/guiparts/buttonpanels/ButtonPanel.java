@@ -1,4 +1,4 @@
-package view.guiparts;
+package view.guiparts.buttonpanels;
 
 import javax.swing.*;
 import java.awt.*;
