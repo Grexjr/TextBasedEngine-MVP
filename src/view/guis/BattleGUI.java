@@ -8,6 +8,7 @@ import view.guiparts.TextLog;
 import model.itm.Item;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class BattleGUI extends GameplayGUI {
 
@@ -19,7 +20,7 @@ public class BattleGUI extends GameplayGUI {
     public BattleGUI(BattleController controller, String enemyName, TextLog log){
         super(log, new BattleButtonPanel(controller));
 
-        //add all buttons, for now just do manual below | TODO: Use enum or class(?) for future
+        //add all buttons, for now just do manual below | TODO: FIX THIS SO THIS CAN GO AWAY!!!
         this.attackButton = new JButton("Attack");
         this.defendButton = new JButton("Defend");
         this.itemButton = new JButton("Items");

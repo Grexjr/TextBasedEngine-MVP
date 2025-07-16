@@ -17,6 +17,9 @@ public abstract class GUI extends JPanel {
 
     // === CONSTRUCTOR ===
     public GUI(JLabel titleLabel, ButtonPanel panel){
+        // Setting basic layout
+        this.setLayout(new BorderLayout());
+
         // Title label; supered by each subclass
         this.titleLabel = titleLabel;
         this.add(titleLabel,BorderLayout.NORTH); // experiment with this

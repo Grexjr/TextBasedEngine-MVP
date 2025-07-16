@@ -21,6 +21,7 @@ public class GameplayGUI extends GUI{
         this.textLog = log;
         this.scroller = new JScrollPane(textLog);
         this.add(scroller, BorderLayout.CENTER);
+        this.refresh();
     }
 
 
