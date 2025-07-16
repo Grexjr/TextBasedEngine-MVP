@@ -5,5 +5,5 @@ NEXT MOVE 7/10/25: ADD PROPER BATTLE EXITING!!!
 
 
 
-7/15/2025: FIX TEXT LOG ISSUE!
---- Text log now appears below the button panel
+7/16/2025:
+--- NEED SCENE CONTROLLER to move between scenes

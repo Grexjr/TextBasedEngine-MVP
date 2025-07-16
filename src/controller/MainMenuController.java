@@ -18,8 +18,8 @@ public class MainMenuController {
 
     // === BUTTON METHODS ===
     public void handleNewGame(){
-        //TEMP
-        System.out.println("Not yet implemented!");
+        // TEMP
+        System.out.println("Game Instance created.");
     }
 
     public void handleContinue(){
@@ -32,9 +32,7 @@ public class MainMenuController {
         System.out.println("Not yet implemented!");
     }
 
-    public void handleQuit(){
-        System.exit(0);
-    }
+    public void handleQuit(){System.exit(0);}
 
 
 
