@@ -1,14 +1,17 @@
 package controller;
 
+import view.ViewManager;
 import view.guis.MainMenuGUI;
 
-public class MainMenuController {
+public class MainMenuController extends SceneController {
 
     // === VARIABLES AND FIELDS ===
     private final MainMenuGUI mainMenuPanel;
 
     // === CONSTRUCTOR ===
-    public MainMenuController(){
+    public MainMenuController(ViewManager viewer){
+        super(viewer,new MainMenuGUI(null));
+
         this.mainMenuPanel = new MainMenuGUI(this);
     }
 

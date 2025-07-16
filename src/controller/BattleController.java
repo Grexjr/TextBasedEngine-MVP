@@ -3,13 +3,14 @@ package controller;
 import model.ety.Entity;
 import model.ety.Player;
 import model.ety.enemy.Enemy;
+import view.ViewManager;
 import view.guis.BattleGUI;
 import view.guiparts.TextLog;
 import model.BattleScene;
 
 import javax.swing.*;
 
-public class BattleController {
+public class BattleController extends SceneController {
     //TODO: Make end of battle better for player loss condition, enemy loss condition, run condition.
 
     // === VARIABLES AND FIELDS ===
@@ -20,7 +21,8 @@ public class BattleController {
 
 
     // === BATTLE CONTROLLER CONSTRUCTOR ===
-    public BattleController(BattleScene bsc, TextLog log){
+    public BattleController(ViewManager viewer, BattleScene bsc, TextLog log){
+        super(viewer,new BattleGUI(null,bsc.getEnemy().getEntityName(),log));
         this.battleScene = bsc;
         this.battlePanel = new BattleGUI(this,bsc.getEnemy().getEntityName(),log);
 

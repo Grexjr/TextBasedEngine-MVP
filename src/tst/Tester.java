@@ -6,6 +6,7 @@ import model.ety.Player;
 import model.ety.enemy.Enemy;
 import model.ety.enemy.Slime;
 import controller.MainMenuController;
+import view.ViewManager;
 import view.guiparts.GameWindow;
 import view.guiparts.TextLog;
 import view.guiparts.buttonpanels.BattleButtonPanel;
@@ -117,11 +118,12 @@ public class Tester {
     // TESTING THE MAIN RUN
     private static void runMainBattle(int enemyLevel){
         GameWindow gameWindow = new GameWindow(800,600,"ROGUE CRAWLER");
+        ViewManager viewMan = new ViewManager(gameWindow);
         TextLog battleLog = new TextLog();
         Player player = new Player("Play guy");
         Enemy slime = new Slime(enemyLevel);
         BattleScene bs = new BattleScene(player, slime);
-        BattleController bc = new BattleController(bs,battleLog);
+        BattleController bc = new BattleController(viewMan,bs,battleLog);
 
         gameWindow.add(bc.getBattlePanel());
         gameWindow.refresh();
