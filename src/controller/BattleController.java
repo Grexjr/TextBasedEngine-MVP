@@ -81,12 +81,14 @@ public class BattleController extends SceneController {
     public void handlePlayerItem() {
             this.currentSceneView.print(
                     new PrintMessage(
-                            PrintMessage.Type.CUSTOM
+                            PrintMessage.Type.ENTITY_ITEM_USE,
+                            this.player.getEntityName()
                     ));
             if(this.player.getPlayerInventory().checkEmpty()){
                 this.currentSceneView.print(
                         new PrintMessage(
-                                PrintMessage.Type.CUSTOM
+                                PrintMessage.Type.ENTITY_FAILED_ITEM_USE,
+                                this.player.getEntityName()
                         ));
             } else{
                 // TEMP: Hard coded for just using healable, need to expand and genericize this.
@@ -173,7 +175,7 @@ public class BattleController extends SceneController {
             this.currentSceneView.print(
                     new PrintMessage(
                             PrintMessage.Type.ENTITY_HEALTH,
-                            this.enemy.getEntityName(),
+                            this.player.getEntityName(),
                             String.valueOf(this.player.getEntityStatBlock().getEntityCurrentHealth()),
                             String.valueOf(this.player.getEntityStatBlock().getEntityMaxHealth())
                     ));
