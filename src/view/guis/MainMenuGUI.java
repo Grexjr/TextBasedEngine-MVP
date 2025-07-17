@@ -14,6 +14,8 @@ public class MainMenuGUI extends GUI {
     public MainMenuGUI(MainMenuButtonPanel menuActions){
         super(new JLabel("RogueCrawler Timescapes"),menuActions);
 
+        // Individual formatting goes here
+
 
     }
 

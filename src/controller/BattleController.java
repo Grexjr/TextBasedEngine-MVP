@@ -4,6 +4,7 @@ import model.ety.Entity;
 import model.ety.Player;
 import model.ety.enemy.Enemy;
 import view.ViewManager;
+import view.guiparts.buttons.BattleButton;
 import view.guis.BattleGUI;
 import view.guiparts.TextLog;
 import model.BattleScene;
@@ -15,23 +16,26 @@ public class BattleController extends SceneController {
 
     // === VARIABLES AND FIELDS ===
     private final BattleScene battleScene;
-    private final BattleGUI battlePanel;
     private final Player player;
     private final Enemy enemy;
 
 
     // === BATTLE CONTROLLER CONSTRUCTOR ===
-    public BattleController(ViewManager viewer, BattleScene bsc, TextLog log){
-        super(viewer,new BattleGUI(null,bsc.getEnemy().getEntityName(),log));
+    public BattleController(ViewManager viewer, BattleScene bsc, BattleGUI gui){
+        super(viewer,gui);
         this.battleScene = bsc;
-        this.battlePanel = new BattleGUI(this,bsc.getEnemy().getEntityName(),log);
 
         this.player = bsc.getPlayer();
         this.enemy = bsc.getEnemy();
+
+        for(BattleButton b : BattleButton.values()){
+            JButton btn = new JButton(b.getButtonDisplayName());
+            btn.addActionListener(_ -> b.performAction(this));
+            gui.getButtonPanel().add(btn);
+        }
     }
 
     // === GETTERS AND SETTERS ===
-    public BattleGUI getBattlePanel() {return battlePanel;}
 
 
     // === CONSTRUCTOR METHODS ===
@@ -40,7 +44,7 @@ public class BattleController extends SceneController {
 
     // button handling methods
     public void handlePlayerAttack(){
-            this.battlePanel.printAttack(this.player,this.enemy);
+            this.getCurrentSceneView().printAttack(this.player,this.enemy); // need to abstract printing
             this.battleScene.attackEntity(this.player,this.enemy);
             if(checkWin()){
                 System.exit(0);

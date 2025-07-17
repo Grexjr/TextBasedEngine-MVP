@@ -17,8 +17,8 @@ public class BattleGUI extends GameplayGUI {
 
 
     // === THE CONSTRUCTOR ===
-    public BattleGUI(BattleController controller, String enemyName, TextLog log){
-        super(log, new BattleButtonPanel(controller));
+    public BattleGUI(BattleButtonPanel actions, TextLog log){
+        super(log, actions);
 
         //add all buttons, for now just do manual below | TODO: FIX THIS SO THIS CAN GO AWAY!!!
         this.attackButton = new JButton("Attack");
