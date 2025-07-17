@@ -4,15 +4,18 @@ import model.ety.Entity;
 import model.ety.Player;
 import model.ety.enemy.Enemy;
 import view.ViewManager;
+import view.guiparts.PrintMessage;
 import view.guiparts.buttons.BattleButton;
 import view.guis.BattleGUI;
 import view.guiparts.TextLog;
 import model.BattleScene;
+import view.guis.GameplayGUI;
 
 import javax.swing.*;
 
 public class BattleController extends SceneController {
-    //TODO: Make end of battle better for player loss condition, enemy loss condition, run condition.
+    //TODO: REFACTOR REFACTOR REFACTOR!!!
+    // TODO: Standardize the print methods even more so you have the arguments you need in there
 
     // === VARIABLES AND FIELDS ===
     private final BattleScene battleScene;
@@ -44,30 +47,57 @@ public class BattleController extends SceneController {
 
     // button handling methods
     public void handlePlayerAttack(){
-            this.getCurrentSceneView().printAttack(this.player,this.enemy); // need to abstract printing
+            this.currentSceneView.print(
+                    new PrintMessage(
+                            PrintMessage.Type.ENTITY_ATTACK,
+                            this.player.getEntityName(),
+                            this.enemy.getEntityName()
+                    ));
             this.battleScene.attackEntity(this.player,this.enemy);
             if(checkWin()){
                 System.exit(0);
             }
-            this.battlePanel.printHealth(this.enemy);
+            this.currentSceneView.print( //TODO: Put this in another method
+                    new PrintMessage(
+                            PrintMessage.Type.ENTITY_HEALTH,
+                            this.enemy.getEntityName(),
+                            String.valueOf(this.enemy.getEntityStatBlock().getEntityCurrentHealth()),
+                            String.valueOf(this.enemy.getEntityStatBlock().getEntityMaxHealth())
+                            ));
             endPlayerTurn();
     }
 
     public void handlePlayerDefend(){
-            this.battlePanel.printDefend(this.player);
+            this.currentSceneView.print(
+                    new PrintMessage(
+                            PrintMessage.Type.ENTITY_DEFEND,
+                            this.player.getEntityName()
+                    ));
             this.player.guard();
             endPlayerTurn();
             this.player.getEntityStatBlock().resetTempStats();
     }
 
     public void handlePlayerItem() {
-            this.battlePanel.printItemUseAttempt(this.player);
+            this.currentSceneView.print(
+                    new PrintMessage(
+                            PrintMessage.Type.CUSTOM
+                    ));
             if(this.player.getPlayerInventory().checkEmpty()){
-                this.battlePanel.printNoItems(this.player);
+                this.currentSceneView.print(
+                        new PrintMessage(
+                                PrintMessage.Type.CUSTOM
+                        ));
             } else{
                 // TEMP: Hard coded for just using healable, need to expand and genericize this.
                 // TEMP: only takes from first slot, no choice | TODO: Add choice for items
-                this.battlePanel.printSuccessfulItemUse(this.player,this.player.getPlayerInventory().getFromIndex(0));
+                // TODO: Add local variable for item
+                this.currentSceneView.print(
+                        new PrintMessage(
+                                PrintMessage.Type.ENTITY_SUCCESSFUL_ITEM_USE,
+                                this.player.getEntityName(),
+                                this.player.getPlayerInventory().getFromIndex(0).getItemName()
+                        ));
                 this.player.useItem(this.player.getPlayerInventory().getFromIndex(0));
                 System.out.println("useItem.success");
             }
@@ -84,7 +114,11 @@ public class BattleController extends SceneController {
                 // Debug
                 System.out.println("Run Successful.");
 
-                this.battlePanel.printSuccessfulRun(this.player.getEntityName());
+                this.currentSceneView.print(
+                        new PrintMessage(
+                                PrintMessage.Type.ENTITY_SUCCESSFUL_RUN,
+                                this.player.getEntityName()
+                        ));
 
                 new Timer(1000,_ -> System.exit(0)).start(); // TODO: Better end function
 
@@ -92,7 +126,11 @@ public class BattleController extends SceneController {
                 // Debug
                 System.out.println("Run failed.");
 
-                this.battlePanel.printFailedRun(this.player.getEntityName());
+                this.currentSceneView.print(
+                        new PrintMessage(
+                                PrintMessage.Type.ENTITY_FAILED_RUN,
+                                this.player.getEntityName()
+                        ));
                 endPlayerTurn();
             }
     }
@@ -100,7 +138,7 @@ public class BattleController extends SceneController {
 
     // === PLAYER TURN METHODS ===
     private void endPlayerTurn(){
-        this.battlePanel.disableButtons();
+        this.currentSceneView.disableButtons();
         if(this.battleScene.getFirstGoer() instanceof Player){
             runEnemyTurn();
         } else{
@@ -111,8 +149,12 @@ public class BattleController extends SceneController {
     // running player turn
     private void runPlayerTurn(){
         if(this.battleScene.isInBattle() && !checkLoss()){
-            this.battlePanel.printStartTurn(this.player);
-            this.battlePanel.enableButtons();
+            this.currentSceneView.print(
+                    new PrintMessage(
+                            PrintMessage.Type.ENTITY_START_TURN,
+                            this.player.getEntityName()
+                    ));
+            this.currentSceneView.enableButtons();
         }
     }
 
@@ -121,9 +163,20 @@ public class BattleController extends SceneController {
     // TODO: Add an endEnemyTurn method so you can check in there for battle ends
     private void runEnemyTurn(){
         if(this.battleScene.isInBattle()){
-            this.battlePanel.printAttack(this.enemy,this.player);
+            this.currentSceneView.print(
+                    new PrintMessage(
+                            PrintMessage.Type.ENTITY_ATTACK,
+                            this.enemy.getEntityName(),
+                            this.player.getEntityName()
+                    ));
             this.battleScene.attackEntity(this.enemy,this.player);
-            this.battlePanel.printHealth(this.player);
+            this.currentSceneView.print(
+                    new PrintMessage(
+                            PrintMessage.Type.ENTITY_HEALTH,
+                            this.enemy.getEntityName(),
+                            String.valueOf(this.player.getEntityStatBlock().getEntityCurrentHealth()),
+                            String.valueOf(this.player.getEntityStatBlock().getEntityMaxHealth())
+                    ));
             if(this.battleScene.getFirstGoer() instanceof Enemy){
                 runPlayerTurn();
             } else{
@@ -134,8 +187,12 @@ public class BattleController extends SceneController {
 
     // === BATTLE START METHODS ===
     public void startBattle(){
-        this.battlePanel.printBattleStart(this.player,this.enemy);
-        this.battlePanel.disableButtons();
+        this.currentSceneView.print(
+                new PrintMessage(
+                        PrintMessage.Type.CUSTOM,
+                        "Battle has begun!\n"
+                ));
+        this.currentSceneView.disableButtons();
         if(this.battleScene.getFirstGoer() instanceof Player){
             runPlayerTurn();
         } else {

@@ -121,29 +121,29 @@ public class Tester {
     private static void runMainBattle(int enemyLevel){
         GameWindow gameWindow = new GameWindow(800,600,"ROGUE CRAWLER");
         ViewManager viewMan = new ViewManager(gameWindow);
-        TextLog battleLog = new TextLog();
+        BattleGUI battle = new BattleGUI(new BattleButtonPanel(),new TextLog());
         Player player = new Player("Play guy");
         Enemy slime = new Slime(enemyLevel);
         BattleScene bs = new BattleScene(player, slime);
-        BattleController bc = new BattleController(viewMan,bs,battleLog);
+        BattleController bc = new BattleController(viewMan,bs,battle);
 
-        gameWindow.add(bc.getBattlePanel());
+        gameWindow.add(bc.getCurrentSceneView());
         gameWindow.refresh();
     }
 
     // The tester main method
     public static void main(String[] args){
 
-        //runMainBattle(1);
+        runMainBattle(1);
 
-        GameWindow gameWindow = new GameWindow(800,600,"ROGUE CRAWLER");
+        /*GameWindow gameWindow = new GameWindow(800,600,"ROGUE CRAWLER");
         ViewManager viewer = new ViewManager(gameWindow);
         MainMenuGUI mainMenu = new MainMenuGUI(new MainMenuButtonPanel());
         MainMenuController mmc = new MainMenuController(viewer,mainMenu);
 
 
         gameWindow.add(mainMenu);
-        gameWindow.refresh();
+        gameWindow.refresh();*/
 
         //testGoFirstMethod(100000);
 

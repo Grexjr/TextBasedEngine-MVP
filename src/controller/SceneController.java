@@ -8,11 +8,11 @@ public class SceneController {
 
     // === VARIABLES AND FIELDS ===
     private final ViewManager viewer;
-    private GameplayGUI currentSceneView;
+    protected GUI currentSceneView;
     // TODO: Create scene class that battlescene extends from
 
     // === CONSTRUCTOR ===
-    public SceneController(ViewManager view, GameplayGUI currentView){
+    public SceneController(ViewManager view, GUI currentView){
         this.viewer = view;
         this.currentSceneView = currentView;
     }
@@ -21,7 +21,7 @@ public class SceneController {
     // === GETTERS ===
     public ViewManager getViewer() {return viewer;}
 
-    public GameplayGUI getCurrentSceneView() {return currentSceneView;}
+    public GUI getCurrentSceneView() {return currentSceneView;}
     public void setCurrentSceneView(GameplayGUI currentSceneView) {this.currentSceneView = currentSceneView;}
 
 }
