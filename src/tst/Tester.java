@@ -134,16 +134,16 @@ public class Tester {
     // The tester main method
     public static void main(String[] args){
 
-        runMainBattle(1);
+        //runMainBattle(1);
 
-        /*GameWindow gameWindow = new GameWindow(800,600,"ROGUE CRAWLER");
+        GameWindow gameWindow = new GameWindow(800,600,"ROGUE CRAWLER");
         ViewManager viewer = new ViewManager(gameWindow);
         MainMenuGUI mainMenu = new MainMenuGUI(new MainMenuButtonPanel());
         MainMenuController mmc = new MainMenuController(viewer,mainMenu);
 
 
         gameWindow.add(mainMenu);
-        gameWindow.refresh();*/
+        gameWindow.refresh();
 
         //testGoFirstMethod(100000);
 

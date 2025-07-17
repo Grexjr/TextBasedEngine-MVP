@@ -1,8 +1,10 @@
 package controller;
 
 import view.ViewManager;
+import view.guiparts.TextLog;
 import view.guiparts.buttons.MainMenuButton;
 import view.guis.MainMenuGUI;
+import view.guis.StoryGUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,8 +29,8 @@ public class MainMenuController extends SceneController {
 
     // === BUTTON METHODS ===
     public void handleNewGame(){
-        // TEMP
         System.out.println("Game Instance created.");
+        this.getViewer().viewTransition(new StoryGUI(new TextLog()));
     }
 
     public void handleContinue(){

@@ -1,5 +1,6 @@
 package view.guis;
 
+import view.ViewManager;
 import view.guiparts.TextLog;
 import view.guiparts.buttonpanels.StoryButtonPanel;
 
@@ -11,6 +12,7 @@ public class StoryGUI extends GameplayGUI{
     // === CONSTRUCTOR ===
     public StoryGUI(TextLog log){
         super(log,new StoryButtonPanel());
+
     }
 
 
