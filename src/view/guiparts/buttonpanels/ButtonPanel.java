@@ -16,9 +16,7 @@ public class ButtonPanel extends JPanel {
     }
 
 
-
-
-
-
+    // === GETTER ===
+    public FlowLayout getPanelLayout() {return panelLayout;}
 
 }

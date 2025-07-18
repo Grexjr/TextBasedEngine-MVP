@@ -2,12 +2,13 @@ package controller;
 
 import view.ViewManager;
 import view.guis.GUI;
+import view.guis.GameplayGUI;
 
 public class SceneController {
 
     // === VARIABLES AND FIELDS ===
     private final ViewManager viewer;
-    private GUI currentSceneView;
+    protected GUI currentSceneView;
     // TODO: Create scene class that battlescene extends from
 
     // === CONSTRUCTOR ===
@@ -21,6 +22,6 @@ public class SceneController {
     public ViewManager getViewer() {return viewer;}
 
     public GUI getCurrentSceneView() {return currentSceneView;}
-    public void setCurrentSceneView(GUI currentSceneView) {this.currentSceneView = currentSceneView;}
+    public void setCurrentSceneView(GameplayGUI currentSceneView) {this.currentSceneView = currentSceneView;}
 
 }

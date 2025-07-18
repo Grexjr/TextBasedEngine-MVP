@@ -1,28 +1,40 @@
 package controller;
 
 import view.ViewManager;
+import view.guiparts.TextLog;
+import view.guiparts.buttonpanels.StoryButtonPanel;
+import view.guiparts.buttons.MainMenuButton;
 import view.guis.MainMenuGUI;
+import view.guis.StoryGUI;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class MainMenuController extends SceneController {
 
     // === VARIABLES AND FIELDS ===
-    private final MainMenuGUI mainMenuPanel;
 
     // === CONSTRUCTOR ===
-    public MainMenuController(ViewManager viewer){
-        super(viewer,new MainMenuGUI(null));
+    public MainMenuController(ViewManager viewer, MainMenuGUI menu){
+        super(viewer,menu);
 
-        this.mainMenuPanel = new MainMenuGUI(this);
+        for(MainMenuButton b : MainMenuButton.values()){
+            JButton btn = new JButton(b.getButtonDisplayName());
+            btn.addActionListener(_ -> b.performAction(this));
+            menu.getButtonPanel().add(btn);
+        }
     }
 
     // === GETTERS ===
-    public MainMenuGUI getMainMenuPanel() {return mainMenuPanel;}
 
 
     // === BUTTON METHODS ===
     public void handleNewGame(){
-        // TEMP
         System.out.println("Game Instance created.");
+        StoryGUI newGameGUI = new StoryGUI(new StoryButtonPanel(),new TextLog());
+        StoryController sc = new StoryController(this.getViewer(),newGameGUI);
+        this.getViewer().viewTransition(newGameGUI);
+        newGameGUI.getTextLog().log("Would you like to battle?");
     }
 
     public void handleContinue(){

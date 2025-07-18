@@ -1,5 +1,7 @@
 package view.guis;
 
+import view.guiparts.PrintMessage;
+import view.guiparts.TextLog;
 import view.guiparts.buttonpanels.ButtonPanel;
 
 import javax.swing.*;
@@ -34,6 +36,19 @@ public abstract class GUI extends JPanel {
     public JLabel getTitleLabel() {return titleLabel;}
 
     public ButtonPanel getButtonPanel() {return buttonPanel;}
+
+    public abstract TextLog getTextLog();
+
+
+    // === BASIC METHODS ===
+    // printing text to be overridden
+    public abstract void print(PrintMessage msg);
+
+    // disable buttons
+    public abstract void disableButtons();
+
+    // enable buttons
+    public abstract void enableButtons();
 
 
     // === HELPER METHODS ===

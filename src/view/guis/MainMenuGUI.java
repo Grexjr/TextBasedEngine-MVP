@@ -1,6 +1,9 @@
 package view.guis;
 
 import controller.MainMenuController;
+import view.guiparts.PrintMessage;
+import view.guiparts.TextLog;
+import view.guiparts.buttonpanels.ButtonPanel;
 import view.guiparts.buttonpanels.MainMenuButtonPanel;
 
 import javax.swing.*;
@@ -10,12 +13,33 @@ public class MainMenuGUI extends GUI {
     // === VARIABLES AND FIELDS ===
 
     // === CONSTRUCTOR ===
-    public MainMenuGUI(MainMenuController mmc){
-        super(new JLabel("RogueCrawler Timescapes"),new MainMenuButtonPanel(mmc));
+    public MainMenuGUI(MainMenuButtonPanel menuActions){
+        super(new JLabel("RogueCrawler Timescapes"),menuActions);
 
-        // TODO: Load in an image in the center so buttons go to the bottom
+        // Individual formatting goes here
 
 
+    }
+
+    // === OVERRIDE METHODS ===
+    @Override
+    public TextLog getTextLog(){
+        return null; // TODO: Throw an error here
+    }
+
+    @Override
+    public void print(PrintMessage msg){
+        System.out.println("Main Menu Called to Print!"); // TODO: Throw an error here
+    }
+
+    @Override
+    public void disableButtons(){
+        System.out.println("Main Menu Called to Disable Buttons!"); // TODO: Throw an error here
+    }
+
+    @Override
+    public void enableButtons(){
+        System.out.println("Main Menu Called to Enable Buttons!"); // TODO: Throw an error here
     }
 
 
