@@ -2,6 +2,7 @@ package controller;
 
 import view.ViewManager;
 import view.guiparts.TextLog;
+import view.guiparts.buttonpanels.StoryButtonPanel;
 import view.guiparts.buttons.MainMenuButton;
 import view.guis.MainMenuGUI;
 import view.guis.StoryGUI;
@@ -30,7 +31,10 @@ public class MainMenuController extends SceneController {
     // === BUTTON METHODS ===
     public void handleNewGame(){
         System.out.println("Game Instance created.");
-        this.getViewer().viewTransition(new StoryGUI(new TextLog()));
+        StoryGUI newGameGUI = new StoryGUI(new StoryButtonPanel(),new TextLog());
+        StoryController sc = new StoryController(this.getViewer(),newGameGUI);
+        this.getViewer().viewTransition(newGameGUI);
+        newGameGUI.getTextLog().log("Would you like to battle?");
     }
 
     public void handleContinue(){

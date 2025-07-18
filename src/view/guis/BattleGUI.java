@@ -14,45 +14,28 @@ import java.awt.*;
 public class BattleGUI extends GameplayGUI {
 
     // === VARIABLES AND FIELDS ===
-    private final JButton attackButton, defendButton, itemButton, runButton;
 
 
     // === THE CONSTRUCTOR ===
     public BattleGUI(BattleButtonPanel actions, TextLog log){
         super(log, actions);
-
-        //add all buttons, for now just do manual below | TODO: FIX THIS SO THIS CAN GO AWAY!!!
-        this.attackButton = new JButton("Attack");
-        this.defendButton = new JButton("Defend");
-        this.itemButton = new JButton("Items");
-        this.runButton = new JButton("Run");
     }
 
 
     // === GETTERS AND SETTERS ===
-    public JButton getAttackButton() {return this.attackButton;}
-    public JButton getDefendButton() {return this.defendButton;}
-    public JButton getItemButton() {return this.itemButton;}
-    public JButton getRunButton() {return this.runButton;}
 
 
     // === OTHER METHODS ===
     // method to enable buttons
     @Override
     public void enableButtons(){
-        this.getAttackButton().setEnabled(true);
-        this.getDefendButton().setEnabled(true);
-        this.getItemButton().setEnabled(true);
-        this.getRunButton().setEnabled(true);
+
     }
 
     // method to disable buttons
     @Override
     public void disableButtons(){
-        this.getAttackButton().setEnabled(false);
-        this.getDefendButton().setEnabled(false);
-        this.getItemButton().setEnabled(false);
-        this.getRunButton().setEnabled(false);
+
     }
 
 

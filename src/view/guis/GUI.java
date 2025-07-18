@@ -1,6 +1,7 @@
 package view.guis;
 
 import view.guiparts.PrintMessage;
+import view.guiparts.TextLog;
 import view.guiparts.buttonpanels.ButtonPanel;
 
 import javax.swing.*;
@@ -35,6 +36,8 @@ public abstract class GUI extends JPanel {
     public JLabel getTitleLabel() {return titleLabel;}
 
     public ButtonPanel getButtonPanel() {return buttonPanel;}
+
+    public abstract TextLog getTextLog();
 
 
     // === BASIC METHODS ===

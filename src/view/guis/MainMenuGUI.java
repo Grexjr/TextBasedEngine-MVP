@@ -2,6 +2,7 @@ package view.guis;
 
 import controller.MainMenuController;
 import view.guiparts.PrintMessage;
+import view.guiparts.TextLog;
 import view.guiparts.buttonpanels.ButtonPanel;
 import view.guiparts.buttonpanels.MainMenuButtonPanel;
 
@@ -21,6 +22,11 @@ public class MainMenuGUI extends GUI {
     }
 
     // === OVERRIDE METHODS ===
+    @Override
+    public TextLog getTextLog(){
+        return null; // TODO: Throw an error here
+    }
+
     @Override
     public void print(PrintMessage msg){
         System.out.println("Main Menu Called to Print!"); // TODO: Throw an error here

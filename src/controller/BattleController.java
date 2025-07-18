@@ -5,11 +5,13 @@ import model.ety.Player;
 import model.ety.enemy.Enemy;
 import view.ViewManager;
 import view.guiparts.PrintMessage;
+import view.guiparts.buttonpanels.StoryButtonPanel;
 import view.guiparts.buttons.BattleButton;
 import view.guis.BattleGUI;
 import view.guiparts.TextLog;
 import model.BattleScene;
 import view.guis.GameplayGUI;
+import view.guis.StoryGUI;
 
 import javax.swing.*;
 
@@ -36,6 +38,8 @@ public class BattleController extends SceneController {
             btn.addActionListener(_ -> b.performAction(this));
             gui.getButtonPanel().add(btn);
         }
+
+        startBattle();
     }
 
     // === GETTERS AND SETTERS ===
@@ -55,7 +59,7 @@ public class BattleController extends SceneController {
                     ));
             this.battleScene.attackEntity(this.player,this.enemy);
             if(checkWin()){
-                System.exit(0);
+                endBattle();
             }
             this.currentSceneView.print( //TODO: Put this in another method
                     new PrintMessage(
@@ -218,7 +222,9 @@ public class BattleController extends SceneController {
     // method to end the battle
     private void endBattle(){
         this.battleScene.setInBattle(false);
-        // If checkWin vs if checkLoss vs returning run
+        StoryGUI nextStoryScene = new StoryGUI(new StoryButtonPanel(),this.getCurrentSceneView().getTextLog());
+        this.getViewer().viewTransition(nextStoryScene);
+        new StoryController(this.getViewer(),nextStoryScene); // Need a way to refer back to the story controller... or create new?
         //TODO: Add better functionality for this; exit codes, etc.
     }
 
