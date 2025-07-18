@@ -45,6 +45,7 @@ public class StoryController extends SceneController{
 
     public void handleNo(){
         System.out.println("No");
+        System.exit(0);
     }
 
 
